@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etia — Tu restaurante en tiempo real.</title>
+  <meta name="description" content="La plataforma que digitaliza la experiencia completa del restaurante. Menú digital, pedido, pago y analytics en una sola app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #0F2A4A;
+      --navy2: #1A3F6F;
+      --cream: #EDE8D8;
+      --cream2:#F5F2EA;
+      --cream3:#FAF8F3;
+      --blue:  #4A9EFF;
+      --muted: rgba(15,42,74,.45);
+      --border:rgba(15,42,74,.1);
+      --serif: 'Instrument Serif', serif;
+      --sans:  'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--cream3); color: var(--navy); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 56px; background: rgba(250,248,243,.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nl { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nl span { font-size: 20px; font-weight: 600; color: var(--navy); letter-spacing: -.5px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--navy); }
+    .nbtn { background: var(--navy) !important; color: var(--cream) !important; padding: 9px 22px; border-radius: 8px; font-weight: 500 !important; transition: opacity .2s !important; }
+    .nbtn:hover { opacity: .8 !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; }
+    .eyebrow-sm { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; animation: up .6s ease both; }
+    .hero h1 { font-family: var(--serif); font-size: clamp(52px, 9vw, 96px); font-weight: 400; line-height: .95; letter-spacing: -2.5px; color: var(--navy); max-width: 820px; margin-bottom: 28px; animation: up .6s ease .08s both; }
+    .hero h1 em { font-style: italic; opacity: .4; }
+    .hero p { font-size: 18px; font-weight: 300; color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 44px; animation: up .6s ease .16s both; }
+    .ctas { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; animation: up .6s ease .24s both; }
+    .btn-n { background: var(--navy); color: var(--cream); padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; text-decoration: none; border: none; cursor: pointer; font-family: var(--sans); transition: opacity .2s, transform .15s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-n:hover { opacity: .82; transform: translateY(-2px); }
+    .btn-g { color: var(--muted); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color .2s; }
+    .btn-g:hover { color: var(--navy); }
+
+    /* PHONES */
+    .phones { display: flex; gap: 20px; align-items: flex-end; justify-content: center; margin-top: 72px; animation: up .6s ease .32s both; }
+    .phone { background: var(--navy); border-radius: 28px; overflow: hidden; box-shadow: 0 32px 80px rgba(15,42,74,.2), 0 0 0 1px rgba(15,42,74,.08); flex-shrink: 0; }
+    .ph-main { width: 210px; height: 430px; }
+    .ph-sec  { width: 178px; height: 360px; opacity: .55; }
+    .notch { width: 56px; height: 5px; background: rgba(237,232,216,.1); border-radius: 3px; margin: 12px auto 0; }
+    .pi { padding: 14px 14px 0; }
+    .pbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .pbrand { font-size: 13px; font-weight: 600; color: var(--cream); }
+    .ptag { font-size: 10px; background: rgba(237,232,216,.1); color: rgba(237,232,216,.6); padding: 3px 8px; border-radius: 4px; }
+    .slbl { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: rgba(237,232,216,.3); margin-bottom: 10px; }
+    .mrow { display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(237,232,216,.05); border-radius: 10px; border: 1px solid rgba(237,232,216,.07); margin-bottom: 8px; }
+    .mrow.sel { border-color: rgba(74,158,255,.25); background: rgba(74,158,255,.06); }
+    .mico { width: 36px; height: 36px; border-radius: 8px; background: rgba(237,232,216,.06); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .minfo { flex: 1; }
+    .mname { font-size: 11px; font-weight: 500; color: var(--cream); margin-bottom: 2px; }
+    .mprice { font-size: 10px; color: rgba(237,232,216,.35); }
+    .madd { width: 22px; height: 22px; border-radius: 6px; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; flex-shrink: 0; }
+    .madd.chk { background: rgba(74,158,255,.3); font-size: 10px; }
+    .ptotal { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid rgba(237,232,216,.07); margin-top: 2px; }
+    .ptotal-l { font-size: 10px; color: rgba(237,232,216,.3); }
+    .ptotal-v { font-size: 12px; font-weight: 600; color: var(--blue); }
+    .ppay { margin: 10px 0; background: var(--blue); border-radius: 10px; padding: 11px; text-align: center; font-size: 12px; font-weight: 600; color: #fff; }
+    /* Host phone */
+    .pchip { display: inline-flex; align-items: center; gap: 5px; background: rgba(237,232,216,.07); border: 1px solid rgba(237,232,216,.1); border-radius: 6px; padding: 4px 8px; font-size: 10px; color: rgba(237,232,216,.45); margin-bottom: 14px; }
+    .pstat { padding: 10px; background: rgba(237,232,216,.04); border: 1px solid rgba(237,232,216,.07); border-radius: 10px; margin-bottom: 8px; }
+    .psval { font-family: var(--serif); font-size: 22px; color: var(--cream); line-height: 1; }
+    .pslbl { font-size: 10px; color: rgba(237,232,216,.3); margin-top: 2px; }
+    .pai { padding: 10px; background: rgba(74,158,255,.09); border: 1px solid rgba(74,158,255,.18); border-radius: 10px; }
+    .pai-l { font-size: 9px; color: var(--blue); font-weight: 600; letter-spacing: .5px; margin-bottom: 5px; }
+    .pai-t { font-size: 10px; color: rgba(237,232,216,.6); line-height: 1.5; }
+
+    /* DIVIDER */
+    hr.div { border: none; border-top: 1px solid var(--border); }
+
+    /* LOGOS */
+    .logos { padding: 36px 56px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: center; }
+    .logos p { font-size: 11px; color: var(--muted); letter-spacing: .3px; width: 100%; text-align: center; margin-bottom: 4px; }
+    .logos span { font-size: 14px; font-weight: 500; color: rgba(15,42,74,.18); }
+
+    /* WRAP / SECTION */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .sec { padding: 112px 0; }
+    .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+    .title { font-family: var(--serif); font-size: clamp(34px, 5vw, 54px); font-weight: 400; letter-spacing: -1.5px; line-height: 1.0; color: var(--navy); margin-bottom: 18px; }
+    .title em { font-style: italic; }
+    .body { font-size: 17px; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 500px; }
+
+    /* FEATURES 3-COL */
+    .fgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 60px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .feat { padding: 38px 34px; background: var(--cream3); transition: background .2s; }
+    .feat:hover { background: var(--cream2); }
+    .ficon { width: 40px; height: 40px; border-radius: 10px; background: var(--navy); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+    .feat h3 { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 10px; letter-spacing: -.2px; }
+    .feat p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.65; }
+
+    /* SPLIT */
+    .split { display: flex; gap: 72px; align-items: center; }
+    .st { flex: 1; }
+    .sv { flex: 1; }
+
+    /* DASH */
+    .dash { background: var(--navy); border-radius: 20px; padding: 28px; box-shadow: 0 24px 60px rgba(15,42,74,.15); }
+    .dh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .dt { font-size: 13px; font-weight: 500; color: rgba(237,232,216,.5); }
+    .dd { font-size: 11px; color: rgba(237,232,216,.25); }
+    .dstats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .ds { background: rgba(237,232,216,.04); border: 1px solid rgba(237,232,216,.06); border-radius: 10px; padding: 14px; }
+    .dsv { font-family: var(--serif); font-size: 24px; color: var(--cream); line-height: 1; margin-bottom: 3px; }
+    .dsl { font-size: 11px; color: rgba(237,232,216,.3); }
+    .dbars { display: flex; flex-direction: column; gap: 8px; }
+    .dbar { display: flex; align-items: center; gap: 10px; }
+    .dbl { font-size: 11px; color: rgba(237,232,216,.35); width: 72px; flex-shrink: 0; }
+    .dbt { flex: 1; height: 5px; background: rgba(237,232,216,.06); border-radius: 3px; overflow: hidden; }
+    .dbf { height: 100%; border-radius: 3px; }
+    .dbv { font-size: 11px; color: rgba(237,232,216,.35); width: 42px; text-align: right; flex-shrink: 0; }
+    .dai { margin-top: 14px; background: rgba(74,158,255,.08); border: 1px solid rgba(74,158,255,.16); border-radius: 10px; padding: 14px; }
+    .dail { font-size: 10px; color: var(--blue); font-weight: 600; letter-spacing: .5px; margin-bottom: 5px; }
+    .dait { font-size: 12px; color: rgba(237,232,216,.6); line-height: 1.55; }
+
+    /* CASES */
+    .cgrid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 60px; }
+    .ccard { border: 1px solid var(--border); border-radius: 16px; padding: 34px; background: var(--cream3); transition: border-color .2s, transform .2s; }
+    .ccard:hover { border-color: rgba(15,42,74,.22); transform: translateY(-3px); }
+    .cn { font-family: var(--serif); font-size: 44px; color: rgba(15,42,74,.07); line-height: 1; margin-bottom: 10px; }
+    .ccard h3 { font-size: 17px; font-weight: 500; color: var(--navy); margin-bottom: 10px; letter-spacing: -.3px; }
+    .ccard p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.65; }
+    .ctag { display: inline-block; margin-top: 14px; font-size: 11px; font-weight: 500; background: var(--navy); color: var(--cream); padding: 4px 12px; border-radius: 100px; }
+
+    /* PRICING */
+    .pgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 60px; align-items: start; }
+    .pcard { border: 1px solid var(--border); border-radius: 16px; padding: 34px; background: var(--cream3); position: relative; }
+    .pcard.feat { background: var(--navy); border-color: var(--navy); }
+    .pbadge { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--blue); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 14px; border-radius: 100px; white-space: nowrap; }
+    .pname { font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+    .pcard.feat .pname { color: rgba(237,232,216,.4); }
+    .pprice { font-family: var(--serif); font-size: 50px; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+    .pcard.feat .pprice { color: var(--cream); }
+    .pprice sup { font-size: 22px; vertical-align: super; }
+    .pprice sub { font-size: 16px; font-family: var(--sans); font-weight: 300; }
+    .pdesc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; }
+    .pcard.feat .pdesc { color: rgba(237,232,216,.4); }
+    .pfline { border: none; border-top: 1px solid var(--border); margin-bottom: 18px; }
+    .pcard.feat .pfline { border-color: rgba(237,232,216,.08); }
+    .pfeats { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .pf { font-size: 13px; color: var(--navy); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
+    .pcard.feat .pf { color: rgba(237,232,216,.7); }
+    .ck { flex-shrink: 0; margin-top: 1px; }
+    .pcard.feat .ck { color: var(--blue); }
+    .bplan-n { width: 100%; padding: 12px; background: var(--navy); color: var(--cream); border: none; border-radius: 10px; font-size: 14px; font-weight: 500; font-family: var(--sans); cursor: pointer; transition: opacity .2s; }
+    .bplan-n:hover { opacity: .8; }
+    .bplan-o { width: 100%; padding: 12px; background: transparent; color: var(--cream); border: 1.5px solid rgba(237,232,216,.18); border-radius: 10px; font-size: 14px; font-weight: 500; font-family: var(--sans); cursor: pointer; transition: border-color .2s; }
+    .bplan-o:hover { border-color: rgba(237,232,216,.45); }
+
+    /* TESTIMONIALS */
+    .tgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 60px; }
+    .tcard { border: 1px solid var(--border); border-radius: 16px; padding: 30px; background: var(--cream3); }
+    .tquote { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--navy); line-height: 1.65; margin-bottom: 22px; }
+    .tauthor { display: flex; align-items: center; gap: 12px; }
+    .tavatar { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .tname { font-size: 13px; font-weight: 500; color: var(--navy); }
+    .trole { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* CTA */
+    .ctasec { padding: 130px 24px; text-align: center; background: var(--navy); position: relative; overflow: hidden; }
+    .ctasec::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(74,158,255,.1) 0%, transparent 70%); pointer-events: none; }
+    .ctasec .eyebrow { color: rgba(237,232,216,.3); }
+    .ctasec .title { color: var(--cream); }
+    .ctasec .title em { opacity: .4; }
+    .ctasub { font-size: 17px; font-weight: 300; color: rgba(237,232,216,.45); margin: 18px 0 44px; }
+    .ctaform { display: flex; gap: 10px; max-width: 430px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+    .ctainput { flex: 1; min-width: 200px; padding: 14px 18px; background: rgba(237,232,216,.07); border: 1.5px solid rgba(237,232,216,.1); border-radius: 10px; font-size: 14px; color: var(--cream); font-family: var(--sans); outline: none; transition: border-color .2s; }
+    .ctainput::placeholder { color: rgba(237,232,216,.22); }
+    .ctainput:focus { border-color: var(--blue); }
+    .btncream { background: var(--cream); color: var(--navy); padding: 14px 26px; border-radius: 10px; font-size: 14px; font-weight: 500; font-family: var(--sans); border: none; cursor: pointer; transition: opacity .2s; white-space: nowrap; }
+    .btncream:hover { opacity: .85; }
+
+    /* FOOTER */
+    footer { background: var(--navy); border-top: 1px solid rgba(237,232,216,.06); padding: 44px 56px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .fbrand { font-size: 18px; font-weight: 600; color: var(--cream); letter-spacing: -.5px; }
+    .ftagline { font-size: 12px; color: rgba(237,232,216,.28); margin-top: 3px; }
+    .flinks { display: flex; gap: 28px; list-style: none; flex-wrap: wrap; }
+    .flinks a { font-size: 13px; color: rgba(237,232,216,.32); text-decoration: none; transition: color .2s; }
+    .flinks a:hover { color: rgba(237,232,216,.75); }
+    .fcopy { font-size: 12px; color: rgba(237,232,216,.15); }
+
+    /* ANIMATIONS */
+    @keyframes up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* TOAST */
+    #toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--navy); color: var(--cream); padding: 13px 22px; border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 32px rgba(15,42,74,.25); opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; white-space: nowrap; z-index: 999; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 900px) {
+      .fgrid { grid-template-columns: 1fr; }
+      .pgrid { grid-template-columns: 1fr; }
+      .tgrid { grid-template-columns: 1fr; }
+      .cgrid { grid-template-columns: 1fr; }
+      .split { flex-direction: column; gap: 48px; }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .logos { padding: 28px 24px; }
+      footer { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nl">
+    <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
+      <rect width="30" height="30" rx="8" fill="#0F2A4A"/>
+      <path fill-rule="evenodd" fill="#EDE8D8" d="M7 15c0-4.42 3.36-8 7.5-8s7.5 3.36 7.5 7.5c0 .33-.02.65-.06.96H10.2c.32 2.06 2 3.54 4.3 3.54 1.6 0 3-.72 3.9-1.9l2.5 1.6C19.48 20.7 17.14 22 14.5 22 10.36 22 7 18.42 7 15z"/>
+      <path fill="#0F2A4A" d="M10.24 13.6h8.52c-.46-1.9-2.16-3.2-4.26-3.2s-3.8 1.3-4.26 3.2z"/>
+      <line x1="18.5" y1="8.5" x2="18.5" y2="13" stroke="#5B9778" stroke-width="1" stroke-linecap="round"/>
+      <line x1="20"   y1="8.5" x2="20"   y2="13" stroke="#5B9778" stroke-width="1" stroke-linecap="round"/>
+      <line x1="21.5" y1="8.5" x2="21.5" y2="13" stroke="#5B9778" stroke-width="1" stroke-linecap="round"/>
+      <path d="M18.5 13 Q20 15 21.5 13" fill="none" stroke="#5B9778" stroke-width="1" stroke-linecap="round"/>
+      <line x1="20" y1="15" x2="20" y2="21" stroke="#5B9778" stroke-width="1" stroke-linecap="round"/>
+    </svg>
+    <span>Etia</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#producto">Producto</a></li>
+    <li><a href="#casos">Casos de uso</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#contacto" class="nbtn">Comenzar gratis</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <p class="eyebrow-sm">Tecnología para gastronomía</p>
+  <h1>Tu restaurante,<br><em>en tiempo real.</em></h1>
+  <p>Menú digital, pedido desde el celular, pago integrado y analytics accionables — todo en una sola plataforma.</p>
+  <div class="ctas">
+    <a href="#contacto" class="btn-n">Sumar mi restaurante <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#producto" class="btn-g">Ver cómo funciona ↓</a>
+  </div>
+
+  <div class="phones">
+    <!-- Etia consumer -->
+    <div class="phone ph-main">
+      <div class="notch"></div>
+      <div class="pi">
+        <div class="pbar"><span class="pbrand">Etia</span><span class="ptag">Mesa 4</span></div>
+        <div class="slbl">Platos principales</div>
+        <div class="mrow">
+          <div class="mico">🥩</div>
+          <div class="minfo"><div class="mname">Bife de chorizo</div><div class="mprice">$4.800</div></div>
+          <div class="madd">+</div>
+        </div>
+        <div class="mrow">
+          <div class="mico">🍝</div>
+          <div class="minfo"><div class="mname">Tallarines al pesto</div><div class="mprice">$3.200</div></div>
+          <div class="madd">+</div>
+        </div>
+        <div class="mrow sel">
+          <div class="mico">🐟</div>
+          <div class="minfo"><div class="mname">Salmón grillado</div><div class="mprice">$5.100</div></div>
+          <div class="madd chk">✓</div>
+        </div>
+        <div class="ptotal"><span class="ptotal-l">1 ítem</span><span class="ptotal-v">$5.100</span></div>
+        <div class="ppay">Pagar ahora</div>
+      </div>
+    </div>
+    <!-- Etia Host -->
+    <div class="phone ph-sec">
+      <div class="notch"></div>
+      <div class="pi">
+        <div class="pbar"><span class="pbrand" style="font-size:11px;">Etia Host</span></div>
+        <div class="pchip"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="#4A9EFF"/></svg>En vivo</div>
+        <div class="pstat"><div class="psval">$186k</div><div class="pslbl">Ingresos del día</div></div>
+        <div class="pstat"><div class="psval">34</div><div class="pslbl">Cubiertos activos</div></div>
+        <div class="pai"><div class="pai-l">ETIA INTELLIGENCE</div><div class="pai-t">"El salmón tiene 68% de margen. Destacalo este finde."</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos reveal">
+  <p>Usado por restaurantes en toda Buenos Aires</p>
+  <span>Parrilla Don Carlos</span>
+  <span>La Ostería</span>
+  <span>Café Palermo</span>
+  <span>El Federal</span>
+  <span>Cantina Buen Ayre</span>
+  <span>La Biela</span>
+</div>
+<hr class="div">
+
+<!-- PRODUCTO -->
+<section class="sec wrap reveal" id="producto">
+  <p class="eyebrow">El producto</p>
+  <h2 class="title">Una plataforma.<br><em>Dos interfaces.</em></h2>
+  <p class="body">Etia para el comensal, Etia Host para el restaurante. Se complementan, se potencian.</p>
+  <div class="fgrid">
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2a5 5 0 100 10A5 5 0 0012 2zM4 20s0-6 8-6 8 6 8 6" stroke="#EDE8D8" stroke-width="1.7" stroke-linecap="round"/></svg></div><h3>Menú digital con QR</h3><p>Acceso desde el navegador, sin app. Fotos, filtros de alérgenos y edición del menú en tiempo real.</p></div>
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" stroke="#EDE8D8" stroke-width="1.7"/><path d="M2 10h20" stroke="#EDE8D8" stroke-width="1.7"/></svg></div><h3>Pago integrado y split</h3><p>División automática de la cuenta, propina individual y pago desde el celular. Sin esperar al mozo.</p></div>
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" stroke="#EDE8D8" stroke-width="1.7"/></svg></div><h3>Etia Intelligence</h3><p>IA que interpreta los datos y genera recomendaciones concretas: precios, retención y predicción de demanda.</p></div>
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M3 3h18v4H3zM3 10h11M3 17h7" stroke="#EDE8D8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Dashboard de ventas</h3><p>Ingresos, ticket promedio y cubiertos en tiempo real desde cualquier dispositivo.</p></div>
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#EDE8D8" stroke-width="1.7"/><path d="M12 14c-5 0-7 2.5-7 4" stroke="#EDE8D8" stroke-width="1.7" stroke-linecap="round"/><path d="M17 14l1.5 1.5L21 13" stroke="#EDE8D8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Perfil del comensal</h3><p>Historial, platos favoritos y beneficios por fidelidad. Una identidad gastronómica que crece con cada visita.</p></div>
+    <div class="feat"><div class="ficon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" stroke="#EDE8D8" stroke-width="1.7" stroke-linecap="round"/></svg></div><h3>Gestión de costos</h3><p>Cargá ingredientes por plato y calculá el margen real de tu carta automáticamente.</p></div>
+  </div>
+</section>
+<hr class="div">
+
+<!-- SPLIT: DASHBOARD -->
+<section class="sec wrap reveal">
+  <div class="split">
+    <div class="st">
+      <p class="eyebrow">Etia Host</p>
+      <h2 class="title">Datos que antes<br><em>no tenías.</em></h2>
+      <p class="body" style="margin-bottom:32px;">Ventas, reservas, equipo y costos — centralizados en tiempo real. Desde el celular o la computadora.</p>
+      <a href="#contacto" class="btn-n" style="display:inline-flex;">Ver demo en vivo →</a>
+    </div>
+    <div class="sv">
+      <div class="dash">
+        <div class="dh"><span class="dt">Resumen del día</span><span class="dd">Hoy, 25 mar</span></div>
+        <div class="dstats">
+          <div class="ds"><div class="dsv">$186k</div><div class="dsl">Ingresos</div></div>
+          <div class="ds"><div class="dsv">34</div><div class="dsl">Cubiertos</div></div>
+          <div class="ds"><div class="dsv">$5.470</div><div class="dsl">Ticket prom.</div></div>
+          <div class="ds"><div class="dsv">+12%</div><div class="dsl">vs. semana ant.</div></div>
+        </div>
+        <div class="dbars">
+          <div class="dbar"><span class="dbl">Salmón</span><div class="dbt"><div class="dbf" style="width:82%;background:#4A9EFF;"></div></div><span class="dbv">68% m.</span></div>
+          <div class="dbar"><span class="dbl">Bife</span><div class="dbt"><div class="dbf" style="width:64%;background:rgba(237,232,216,.4);"></div></div><span class="dbv">54% m.</span></div>
+          <div class="dbar"><span class="dbl">Pesto</span><div class="dbt"><div class="dbf" style="width:46%;background:rgba(237,232,216,.2);"></div></div><span class="dbv">41% m.</span></div>
+        </div>
+        <div class="dai"><div class="dail">ETIA INTELLIGENCE</div><div class="dait">"El salmón grillado tiene un margen del 68%. Considerá destacarlo en el menú del fin de semana."</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="div">
+
+<!-- CASOS DE USO -->
+<section class="sec wrap reveal" id="casos">
+  <p class="eyebrow">Casos de uso</p>
+  <h2 class="title">Cómo lo usa<br><em>tu equipo.</em></h2>
+  <p class="body">Del QR a la mesa, del mozo al dueño — Etia conecta todo el ciclo.</p>
+  <div class="cgrid">
+    <div class="ccard reveal"><div class="cn">01</div><h3>El comensal escanea, pide y paga</h3><p>Desde la mesa, escanea el QR, navega el menú con fotos y filtros, hace el pedido y paga dividiendo la cuenta — sin app, sin fricción.</p><span class="ctag">Etia</span></div>
+    <div class="ccard reveal"><div class="cn">02</div><h3>El dueño revisa los márgenes en tiempo real</h3><p>Con Etia Host, ves cuánto gana cada plato, cuál tiene más demanda y qué mozo tiene mejor ticket promedio. Desde el celular, sin ir al local.</p><span class="ctag">Etia Host</span></div>
+    <div class="ccard reveal"><div class="cn">03</div><h3>La IA detecta un cliente que no volvió</h3><p>Etia Intelligence identifica clientes frecuentes que dejaron de visitar el restaurante y sugiere acciones concretas para recuperarlos.</p><span class="ctag">Etia Intelligence</span></div>
+    <div class="ccard reveal"><div class="cn">04</div><h3>El equipo mide su rendimiento</h3><p>Métricas automáticas por mozo: ticket promedio, propinas recibidas, calificaciones y upselling. Sin planillas, sin subjetividad.</p><span class="ctag">Etia Host</span></div>
+  </div>
+</section>
+<hr class="div">
+
+<!-- PRICING -->
+<section class="sec wrap reveal" id="precios">
+  <p class="eyebrow">Precios</p>
+  <h2 class="title">Simple y alineado<br><em>con tu éxito.</em></h2>
+  <p class="body">Si el restaurante no vende, Etia no cobra.</p>
+  <div class="pgrid">
+    <div class="pcard">
+      <div class="pname">Base</div>
+      <div class="pprice">8<sub>%</sub></div>
+      <div class="pdesc">sobre ventas procesadas.<br>Sin costo mensual fijo.</div>
+      <hr class="pfline">
+      <ul class="pfeats">
+        <li class="pf"><span class="ck">✓</span> Menú digital con QR</li>
+        <li class="pf"><span class="ck">✓</span> Pedido desde el celular</li>
+        <li class="pf"><span class="ck">✓</span> Pago y split automático</li>
+        <li class="pf"><span class="ck">✓</span> Dashboard básico</li>
+      </ul>
+      <button class="bplan-n" onclick="openCTA()">Comenzar gratis</button>
+    </div>
+    <div class="pcard feat">
+      <div class="pbadge">Más elegido</div>
+      <div class="pname">Pro</div>
+      <div class="pprice"><sup>$</sup>49.900<sub>/mes</sub></div>
+      <div class="pdesc">Todas las funciones.<br>30 días gratis.</div>
+      <hr class="pfline">
+      <ul class="pfeats">
+        <li class="pf"><span class="ck">✓</span> Todo lo del plan Base</li>
+        <li class="pf"><span class="ck">✓</span> Gestión de reservas</li>
+        <li class="pf"><span class="ck">✓</span> Perfiles de clientes</li>
+        <li class="pf"><span class="ck">✓</span> Rendimiento del equipo</li>
+        <li class="pf"><span class="ck">✓</span> Panel de costos</li>
+        <li class="pf"><span class="ck">✓</span> Etia Intelligence</li>
+      </ul>
+      <button class="bplan-o" onclick="openCTA()">Probar 30 días gratis</button>
+    </div>
+    <div class="pcard">
+      <div class="pname">Cadena</div>
+      <div class="pprice" style="font-size:32px;font-family:var(--sans);font-weight:300;">A medida</div>
+      <div class="pdesc">Para cadenas con múltiples<br>sucursales.</div>
+      <hr class="pfline">
+      <ul class="pfeats">
+        <li class="pf"><span class="ck">✓</span> Todo lo del plan Pro</li>
+        <li class="pf"><span class="ck">✓</span> Vista consolidada multi-sede</li>
+        <li class="pf"><span class="ck">✓</span> Reportes unificados</li>
+        <li class="pf"><span class="ck">✓</span> API e integraciones</li>
+        <li class="pf"><span class="ck">✓</span> Onboarding dedicado</li>
+      </ul>
+      <button class="bplan-n" onclick="openCTA()">Hablar con ventas</button>
+    </div>
+  </div>
+</section>
+<hr class="div">
+
+<!-- TESTIMONIALS -->
+<section class="sec wrap reveal">
+  <p class="eyebrow">Testimonios</p>
+  <h2 class="title">Lo que dicen<br><em>los restaurantes.</em></h2>
+  <div class="tgrid">
+    <div class="tcard reveal"><p class="tquote">"Antes no sabía qué plato me daba más margen. Con Etia lo veo en el dashboard todos los días desde el celular."</p><div class="tauthor"><div class="tavatar">👨‍🍳</div><div><div class="tname">Martín Rodríguez</div><div class="trole">Dueño · Parrilla Don Carlos</div></div></div></div>
+    <div class="tcard reveal"><p class="tquote">"Las propinas subieron un 30% desde que los clientes pagan desde el celular. El equipo está más motivado."</p><div class="tauthor"><div class="tavatar">👩‍🍳</div><div><div class="tname">Valentina Sosa</div><div class="trole">Gerente · La Ostería</div></div></div></div>
+    <div class="tcard reveal"><p class="tquote">"Implementamos Etia en una tarde. Sin hardware, sin instalación. El equipo lo adoptó solo desde el primer día."</p><div class="tauthor"><div class="tavatar">👨‍💼</div><div><div class="tname">Diego Peralta</div><div class="trole">Socio · Café Palermo</div></div></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="ctasec reveal" id="contacto">
+  <div style="max-width:620px;margin:0 auto;position:relative;z-index:1;">
+    <p class="eyebrow">Sumate a Etia</p>
+    <h2 class="title">Tu restaurante,<br><em>con inteligencia real.</em></h2>
+    <p class="ctasub">Los primeros 30 días son gratis. Sin tarjeta de crédito.</p>
+    <form class="ctaform" id="ctaForm" onsubmit="handleSubmit(event)">
+      <input type="email" class="ctainput" id="emailInput" placeholder="tu@restaurante.com" required>
+      <button type="submit" class="btncream" id="submitBtn">Comenzar ahora</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="fbrand">Etia</div>
+    <div class="ftagline">Gastronomía, reinventada.</div>
+  </div>
+  <ul class="flinks">
+    <li><a href="#producto">Producto</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="mailto:contacto@etia.com.ar">contacto@etia.com.ar</a></li>
+    <li><a href="#">Privacidad</a></li>
+  </ul>
+  <p class="fcopy">© 2026 Etia. Todos los derechos reservados.</p>
+</footer>
+
+<div id="toast">✓ ¡Te contactamos a la brevedad!</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email) return;
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    // Real email via mailto fallback + toast
+    setTimeout(() => {
+      window.location.href = 'mailto:contacto@etia.com.ar?subject=Quiero sumar mi restaurante&body=Hola, me interesa Etia. Mi email es: ' + encodeURIComponent(email);
+      document.getElementById('ctaForm').reset();
+      btn.textContent = 'Comenzar ahora';
+      btn.disabled = false;
+      showToast();
+    }, 600);
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function openCTA() {
+    document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => document.getElementById('emailInput').focus(), 700);
+  }
+</script>
+</body>
+</html>

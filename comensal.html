@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Etia — Tu memoria gastronómica.</title>
+<meta name="description" content="Escaneá el QR de la mesa, pedí, pagá y sumá puntos. Cada visita queda en tu memoria gastronómica y tus amigos la descubren."/>
+<link rel="canonical" href="https://www.etia.com.ar/comensal.html"/>
+<link rel="icon" type="image/png" href="favicon.png"/>
+<meta name="theme-color" content="#0F2A4A"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Etia — Tu memoria gastronómica."/>
+<meta property="og:description" content="Escaneá, pedí, pagá y sumá puntos. Lo que comés cuenta."/>
+<meta property="og:image" content="https://www.etia.com.ar/og.jpg"/>
+<meta property="og:url" content="https://www.etia.com.ar/comensal.html"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0F2A4A;--deep:#0B2038;--blue:#4A9EFF;--cream:#EDE8D8;--cream2:#E0DBCB;--gray:#5E6B7C;
+  --serif:'Instrument Serif',serif;--sans:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--navy);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--blue);color:#fff}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(237,232,216,.18);border-radius:6px;border:3px solid var(--deep)}
+body::after{content:'';position:fixed;inset:0;z-index:998;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.btn{position:relative;overflow:hidden}
+.btn-blue::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.38) 50%,transparent 58%);transform:translateX(-130%)}
+.btn-blue:hover::after{animation:shine .75s ease}
+@keyframes shine{to{transform:translateX(130%)}}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+.r{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.on{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}
+.k{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+
+nav{position:fixed;inset:0 0 auto;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:66px;transition:background .3s,box-shadow .3s}
+nav.s{background:rgba(255,255,255,.96);box-shadow:0 1px 0 rgba(15,42,74,.08);backdrop-filter:blur(14px)}
+.nav-logo img{height:30px}
+.nav-logo .lg-navy{display:none}
+nav.s .lg-cream{display:none}
+nav.s .lg-navy{display:block}
+.nav-right{display:flex;gap:22px;align-items:center}
+.nav-right a{font-size:14px;font-weight:500;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s}
+.nav-right a:hover{color:#fff}
+nav.s .nav-right a{color:rgba(15,42,74,.6)}
+nav.s .nav-right a:hover{color:var(--navy)}
+.nav-cta{background:var(--blue);color:#fff!important;padding:9px 20px;border-radius:100px;font-size:13px;font-weight:700}
+
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:100px;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:var(--sans);transition:transform .15s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:#3a8ee8;transform:translateY(-2px)}
+
+/* hero */
+.hero{background:var(--navy);min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:40px;padding:120px 64px 70px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-250px;right:-200px;width:800px;height:800px;background:radial-gradient(circle,rgba(74,158,255,.12),transparent 60%);pointer-events:none}
+.hero .k{color:var(--blue)}
+.hero h1{font-family:var(--serif);font-size:clamp(42px,5.6vw,76px);line-height:1.03;color:#fff;font-weight:400;margin:20px 0 18px}
+.hero h1 em{color:var(--blue)}
+.hero>div>p{font-size:16.5px;color:rgba(255,255,255,.55);line-height:1.65;max-width:440px;margin-bottom:32px}
+.hero-actions{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.qr-card{background:var(--cream);border-radius:18px;padding:14px;display:flex;gap:14px;align-items:center;max-width:290px}
+.qr-card img{width:86px;height:86px;border-radius:10px}
+.qr-card p{font-size:12.5px;color:var(--navy);line-height:1.45;font-weight:600}
+.qr-card span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-top:5px}
+.hero-phone{justify-self:center;position:relative}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero-phone img{width:min(320px,72vw);border-radius:32px;box-shadow:0 40px 100px rgba(0,0,0,.5);animation:floaty 6.5s ease-in-out infinite}
+.btn svg{transition:transform .22s ease}
+.btn:hover svg{transform:translateX(4px)}
+@media(prefers-reduced-motion:reduce){.r{opacity:1;transform:none;transition:none}*{animation:none!important}}
+
+/* franja del flujo en mesa */
+.flow{background:var(--cream);padding:100px 48px;text-align:center}
+.flow h2{font-family:var(--serif);font-size:clamp(30px,3.6vw,48px);font-weight:400;line-height:1.1;max-width:700px;margin:0 auto}
+.flow h2 em{color:var(--blue)}
+.flow-phones{display:flex;gap:44px;justify-content:center;align-items:flex-start;margin-top:56px;flex-wrap:wrap}
+.flow-item{width:min(230px,80vw)}
+.flow-item img{border-radius:26px;box-shadow:0 22px 55px rgba(15,42,74,.22)}
+.flow-item .k{color:var(--blue);display:block;margin-bottom:14px}
+.flow-item p{font-size:13.5px;color:var(--gray);line-height:1.55;margin-top:14px}
+
+/* splits */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;max-width:1100px;margin:0 auto;padding:110px 48px}
+.split.alt .txt{order:-1}
+.split h2{font-family:var(--serif);font-size:clamp(28px,3vw,40px);line-height:1.15;font-weight:400}
+.split h2 em{color:var(--blue)}
+.split p{font-size:15px;color:var(--gray);line-height:1.65;margin-top:16px;max-width:400px}
+.split .ph{justify-self:center}
+.split .ph img{width:min(290px,80vw);border-radius:28px;box-shadow:0 26px 65px rgba(15,42,74,.25)}
+.split.dark{max-width:none;background:var(--deep);color:#fff}
+.split.dark>div{max-width:550px}
+.split.dark .txt{justify-self:end}
+.split.dark p{color:rgba(255,255,255,.55)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.pills span{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:100px;border:1px solid rgba(74,158,255,.4);color:var(--blue)}
+
+/* cta */
+.cta{background:var(--navy);text-align:center;padding:110px 24px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(74,158,255,.1),transparent 65%);pointer-events:none}
+.cta h2{font-family:var(--serif);font-size:clamp(34px,4.6vw,60px);color:#fff;line-height:1.05;font-weight:400;margin-bottom:16px;position:relative}
+.cta h2 em{color:var(--blue)}
+.cta p{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:36px;position:relative}
+.cta .btn{position:relative}
+.cta .resto-link{display:block;margin-top:34px;position:relative}
+.cta .resto-link a{font-size:14px;color:rgba(255,255,255,.5);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:2px;transition:color .2s}
+.cta .resto-link a:hover{color:#fff}
+
+footer{background:var(--deep);padding:32px 48px}
+.foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot img{height:22px;opacity:.6}
+.foot span{font-size:12px;color:rgba(255,255,255,.22);font-family:var(--mono)}
+.foot a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none}
+.foot a:hover{color:rgba(255,255,255,.8)}
+
+@media(max-width:960px){
+  nav{padding:0 20px}
+  .nav-right a:not(.nav-cta){display:none}
+  .hero{grid-template-columns:1fr;padding:110px 22px 60px;min-height:auto;text-align:center}
+  .hero>div>p{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .qr-card{display:none}
+  .flow{padding:76px 20px}
+  .split{grid-template-columns:1fr;gap:40px;padding:76px 22px;text-align:center}
+  .split.alt .txt{order:0}
+  .split p{margin-left:auto;margin-right:auto}
+  .pills{justify-content:center}
+  .split.dark .txt{justify-self:center}
+  footer{padding:26px 20px}
+  .foot{justify-content:center;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo" aria-label="Etia">
+    <img class="lg-cream" src="logo-cream.png" alt="Etia" width="90" height="30"/>
+    <img class="lg-navy" src="logo-navy.png" alt="Etia" width="90" height="30"/>
+  </a>
+  <div class="nav-right">
+    <a href="index.html">Para restaurantes</a>
+    <a class="nav-cta" href="demo.html">Probar la app</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div>
+    <div class="k r on">Lo que comés, cuenta</div>
+    <h1 class="r on">Tu <em>memoria</em> gastronómica.</h1>
+    <p class="r on d1">Escaneá el QR de la mesa: pedís, dividís la cuenta y pagás sin esperas. Cada visita queda guardada — el plato, el lugar, quién te atendió — y suma puntos que valen en toda la red.</p>
+    <div class="hero-actions r on d2">
+      <a class="btn btn-blue" href="demo.html">Probar la app
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="qr-card">
+        <img src="qr-demo.png" alt="QR a la demo de Etia" width="86" height="86"/>
+        <p>Escanealo con la cámara<span>y probala en tu celular</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-phone r on d1">
+    <img src="ph_feed.jpg" alt="Feed de Etia — visitas de tus amigos" width="320" height="670" fetchpriority="high"/>
+  </div>
+</header>
+
+<!-- FLUJO EN MESA -->
+<section class="flow">
+  <h2 class="r">En el restaurante: escaneás, pedís y pagás. <em>Sin esperas.</em></h2>
+  <div class="flow-phones">
+    <div class="flow-item r"><span class="k">01 · Llegás</span><img src="ph_mesa.jpg" alt="Mesa activa en Casa Oliveira" loading="lazy"/><p>Escaneás el QR y la mesa queda conectada. Sin descargar nada, sin registrarte.</p></div>
+    <div class="flow-item r d1"><span class="k">02 · Pedís</span><img src="ph_carta.jpg" alt="Carta digital con fotos" loading="lazy"/><p>La carta con fotos y precios claros. Agregás con un tap y el pedido sale solo.</p></div>
+    <div class="flow-item r d2"><span class="k">03 · Pagás</span><img src="ph_pagar.jpg" alt="Dividir la cuenta y pagar" loading="lazy"/><p>Todo vos, en partes iguales o cada uno lo suyo. Propina y mozo calificado en el mismo gesto.</p></div>
+  </div>
+</section>
+
+<!-- RED -->
+<section class="split">
+  <div class="ph r"><img src="ph_explorar.jpg" alt="Explorar restaurantes recomendados por amigos" loading="lazy"/></div>
+  <div class="txt r d1">
+    <h2>Tu próxima mesa te la recomienda <em>un amigo</em>, no un algoritmo.</h2>
+    <p>El feed muestra qué pidieron tus amigos, dónde y qué les pareció. Guardás el restaurante, reservás y listo.</p>
+  </div>
+</section>
+
+<!-- PUNTOS -->
+<section class="split dark alt">
+  <div class="ph r"><img src="ph_pago.jpg" alt="Pago confirmado con puntos ganados" loading="lazy"/></div>
+  <div class="txt r d1">
+    <h2>Cada visita <em>suma.</em></h2>
+    <p>Pagaste, ganaste: puntos por consumo, por calificar, por descubrir lugares nuevos. Subís de nivel y desbloqueás beneficios reales en todo el circuito Etia.</p>
+    <div class="pills"><span>Explorer</span><span>Silver</span><span>Gold</span></div>
+  </div>
+</section>
+
+<!-- PERFIL -->
+<section class="split">
+  <div class="ph r"><img src="ph_perfil.jpg" alt="Perfil con Etia Intelligence" loading="lazy"/></div>
+  <div class="txt r d1">
+    <h2>Un perfil que se escribe <em>comiendo.</em></h2>
+    <p>"Sos un explorador mediterráneo." Tus gustos, tus lugares y tus platos — armado solo, visita a visita. Y a fin de año, tu Etia Wrapped.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2 class="r">Tu red, <em>tu mesa.</em></h2>
+  <p class="r d1">Probá la demo interactiva — los datos son simulados, las interacciones son reales.</p>
+  <a class="btn btn-blue r d2" href="demo.html">Probar la app
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <div class="resto-link r d2"><a href="index.html">¿Tenés un restaurante? Conocé Etia Host →</a></div>
+</section>
+
+<footer>
+  <div class="foot">
+    <img src="logo-cream.png" alt="Etia"/>
+    <a href="index.html">Para restaurantes</a>
+    <span>© 2026 ETIA · BUENOS AIRES</span>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>40),{passive:true});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.r:not(.on)').forEach(el=>obs.observe(el));
+</script>
+
+<style>
+#gosplash{position:fixed;inset:0;background:#0B2038;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;pointer-events:none;transition:opacity .3s ease}
+#gosplash.on{opacity:1;pointer-events:auto}
+#gosplash img{height:32px;width:auto;animation:goPulse 1.6s ease-in-out infinite}
+@keyframes goPulse{0%,100%{opacity:.6}50%{opacity:1}}
+#gosplash .gb{width:150px;height:2px;background:rgba(237,232,216,.12);border-radius:99px;overflow:hidden}
+#gosplash .gb i{display:block;height:100%;width:40%;background:#4A9EFF;border-radius:99px;animation:goSlide 1.1s ease-in-out infinite}
+@keyframes goSlide{0%{transform:translateX(-150%)}100%{transform:translateX(400%)}}
+#gosplash .gt{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:rgba(237,232,216,.4)}
+</style>
+<div id="gosplash" aria-hidden="true">
+  <img src="etia-wordmark-cream.png" alt=""/>
+  <div class="gb"><i></i></div>
+  <div class="gt">ABRIENDO LA DEMO</div>
+</div>
+<script>
+document.querySelectorAll('a[href$="demo-host.html"],a[href$="demo.html"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    document.getElementById('gosplash').classList.add('on');
+    setTimeout(function(){location.href=a.getAttribute('href')},380);
+  });
+});
+</script>
+</body>
+</html>

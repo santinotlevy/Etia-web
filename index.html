@@ -1,1005 +1,1114 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Etia — Tu restaurante, en tiempo real.</title>
-  <meta name="description" content="Menú digital, pedido, pago y red social gastronómica. La plataforma completa para restaurantes argentinos."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--navy:#0F2A4A;--blue:#4A9EFF;--cream:#EDE8D8;--cream2:#E0DBCB;--gray:#6B7280;--light:#F7F5F0;--white:#fff}
-    html{scroll-behavior:smooth}
-    body{font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Etia — Tu restaurante, en tiempo real.</title>
+<meta name="description" content="Menú digital con QR, pedido y pago desde el celular, márgenes por plato e inteligencia que se acciona. La plataforma para restaurantes argentinos."/>
+<link rel="canonical" href="https://www.etia.com.ar/"/>
+<link rel="icon" type="image/png" href="favicon.png"/>
+<meta name="theme-color" content="#0F2A4A"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Etia — Tu restaurante, en tiempo real."/>
+<meta property="og:description" content="Menú digital con QR, pedido y pago desde el celular, márgenes por plato e inteligencia que se acciona."/>
+<meta property="og:image" content="https://www.etia.com.ar/og.jpg"/>
+<meta property="og:url" content="https://www.etia.com.ar/"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://www.etia.com.ar/og.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0F2A4A;--deep:#0B2038;--blue:#4A9EFF;--cream:#EDE8D8;--cream2:#E0DBCB;--gray:#5E6B7C;--white:#fff;
+  --serif:'Instrument Serif',serif;--sans:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--navy);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+::selection{background:var(--blue);color:#fff}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(237,232,216,.18);border-radius:6px;border:3px solid var(--deep)}
+::-webkit-scrollbar-thumb:hover{background:rgba(237,232,216,.32)}
 
-    /* ── ANIMATIONS ── */
-    .r{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
-    .rl{opacity:0;transform:translateX(-30px);transition:opacity .65s ease,transform .65s ease}
-    .rr{opacity:0;transform:translateX(30px);transition:opacity .65s ease,transform .65s ease}
-    .rs{opacity:0;transform:scale(.97);transition:opacity .65s ease,transform .65s ease}
-    .on{opacity:1!important;transform:none!important}
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+/* grain global */
+body::after{content:'';position:fixed;inset:0;z-index:998;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-    /* ── NAV ── */
-    nav{position:fixed;inset:0 0 auto;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;transition:background .3s,box-shadow .3s}
-    nav.s{background:rgba(255,255,255,.97);box-shadow:0 1px 0 rgba(15,42,74,.08);backdrop-filter:blur(14px)}
-    .nav-logo{display:flex;align-items:center;text-decoration:none}
-    .nav-logo .wm-cream{height:32px;width:auto;display:block}
-    .nav-logo .wm-navy{height:32px;width:auto;display:none}
-    nav.s .nav-logo .wm-cream{display:none}
-    nav.s .nav-logo .wm-navy{display:block}
-    .nav-links{display:flex;gap:28px;list-style:none}
-    .nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
-    nav.s .nav-links a{color:var(--navy);opacity:.6}
-    .nav-links a:hover{color:white!important;opacity:1!important}
-    nav.s .nav-links a:hover{color:var(--navy)!important;opacity:1!important}
-    .nav-actions{display:flex;gap:10px;align-items:center}
-    .nav-demo{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:white;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
-    .nav-demo:hover{background:rgba(255,255,255,.2)}
-    nav.s .nav-demo{background:transparent;border-color:var(--navy);color:var(--navy)}
-    nav.s .nav-demo:hover{background:var(--navy);color:white}
-    .nav-btn{background:white;color:var(--navy);padding:9px 20px;border-radius:100px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;cursor:pointer;border:none}
-    nav.s .nav-btn{background:var(--navy);color:white}
-    .nav-btn:hover{transform:translateY(-1px)}
+/* reveal */
+.r{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,.8,.3,1),transform .7s cubic-bezier(.22,.8,.3,1)}
+.rl{opacity:0;transform:translateX(-30px);transition:opacity .75s cubic-bezier(.22,.8,.3,1),transform .75s cubic-bezier(.22,.8,.3,1)}
+.rr{opacity:0;transform:translateX(30px);transition:opacity .75s cubic-bezier(.22,.8,.3,1),transform .75s cubic-bezier(.22,.8,.3,1)}
+.on{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){
+  .r,.rl,.rr{opacity:1;transform:none;transition:none}
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
 
-    /* ── HERO ── */
-    .hero{background:var(--navy);min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:110px 64px 80px;gap:48px;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;top:-300px;right:-300px;width:800px;height:800px;background:radial-gradient(circle,rgba(74,158,255,.09) 0%,transparent 60%);pointer-events:none}
-    .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(74,158,255,.12);border:1px solid rgba(74,158,255,.22);border-radius:100px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:24px}
-    .hero-tag span{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-    .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(42px,5.5vw,76px);line-height:1.04;letter-spacing:-2px;color:white;margin-bottom:22px}
-    .hero h1 em{font-style:italic;color:var(--blue)}
-    .hero-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.65;max-width:420px;margin-bottom:38px}
-    .hero-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .btn-blue{background:var(--blue);color:white;padding:14px 26px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;cursor:pointer;border:none}
-    .btn-blue:hover{background:#3a8ee8;transform:translateY(-2px)}
-    .btn-demo-hero{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:white;padding:14px 26px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;cursor:pointer}
-    .btn-demo-hero:hover{background:rgba(255,255,255,.18)}
-    .hero-stats{display:flex;gap:36px;margin-top:48px;padding-top:40px;border-top:1px solid rgba(255,255,255,.1)}
-    .stat-n{font-size:26px;font-weight:700;color:white;line-height:1}
-    .stat-l{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
+.k{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
 
-    /* ── HERO PHONES ── */
-    .hero-phones{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:20px;padding-bottom:20px}
-    .hero-phone{border-radius:0;filter:drop-shadow(0 32px 64px rgba(0,0,0,.5));transition:transform .3s}
-    .hero-phone.main{width:240px;z-index:2;transform:translateY(0)}
-    .hero-phone.back{width:215px;z-index:1;transform:translateY(20px) rotate(4deg);opacity:.85}
-    .hero-phone img{width:100%;display:block}
+/* ── barra de progreso ── */
+#pgbar{position:fixed;top:0;left:0;height:2.5px;width:0;background:var(--blue);z-index:420;pointer-events:none;transition:width .1s linear}
 
-    /* ── TICKER ── */
-    .ticker{background:var(--cream);border-top:1px solid var(--cream2);border-bottom:1px solid var(--cream2);padding:16px 0;overflow:hidden}
-    .ticker-track{display:flex;animation:tick 32s linear infinite;width:max-content}
-    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    .tick-item{display:flex;align-items:center;gap:10px;padding:0 36px;white-space:nowrap}
-    .tick-item strong{font-size:13px;font-weight:700;color:var(--navy)}
-    .tick-item span{font-size:12px;color:var(--gray)}
-    .tick-dot{width:4px;height:4px;background:var(--cream2);border-radius:50%;flex-shrink:0}
+/* ── entrada de página ── */
+body.pre nav{opacity:0;transform:translateY(-10px)}
+body.pre .hero .r{opacity:0!important;transform:translateY(26px)!important}
 
-    /* ── SECTIONS ── */
-    .sec{padding:110px 64px}
-    .sec-inner{max-width:1160px;margin:0 auto}
-    .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--blue);margin-bottom:16px}
-    .sec-h{font-family:'Instrument Serif',serif;font-size:clamp(32px,4.2vw,58px);line-height:1.06;letter-spacing:-1.5px;color:var(--navy)}
-    .sec-h em{font-style:italic;color:var(--blue)}
-    .sec-h.w{color:white}
-    .sec-p{font-size:16px;color:var(--gray);line-height:1.7;margin-top:18px;max-width:480px}
-    .sec-p.w{color:rgba(255,255,255,.6)}
+/* ── nav ── */
+nav{position:fixed;inset:0 0 auto;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:66px;transition:background .3s,box-shadow .3s,opacity .6s ease,transform .6s ease}
+nav.s{background:rgba(255,255,255,.96);box-shadow:0 1px 0 rgba(15,42,74,.08);backdrop-filter:blur(14px)}
+.nav-logo img{height:30px}
+.nav-logo .lg-navy{display:none}
+nav.s .lg-cream{display:none}
+nav.s .lg-navy{display:block}
+.nav-links{display:flex;gap:30px;list-style:none;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:#fff}
+nav.s .nav-links a{color:rgba(15,42,74,.6)}
+nav.s .nav-links a:hover{color:var(--navy)}
+.nav-links a.act{color:#fff;position:relative}
+.nav-links a.act::after{content:'';position:absolute;left:0;right:0;bottom:-7px;height:2px;border-radius:2px;background:var(--blue)}
+nav.s .nav-links a.act{color:var(--navy)}
+.nav-cta{background:var(--blue);color:#fff!important;padding:9px 20px;border-radius:100px;font-size:13px;font-weight:700;text-decoration:none;transition:transform .15s,background .2s}
+.nav-cta:hover{background:#3a8ee8;transform:translateY(-1px)}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.burger span{display:block;width:20px;height:2px;background:#fff;margin:4px 0;transition:.25s;border-radius:2px}
+nav.s .burger span{background:var(--navy)}
+.mnav{display:none;position:fixed;inset:66px 0 auto;z-index:290;background:#fff;box-shadow:0 20px 40px rgba(15,42,74,.15);padding:12px 24px 24px}
+.mnav.open{display:block}
+.mnav a{display:block;padding:14px 4px;font-size:16px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(15,42,74,.07)}
+.mnav a:last-child{border:none}
 
-    /* ── DASHBOARD ── */
-    .dash-sec{background:var(--navy)}
-    .dash-img{border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06);margin-top:52px}
-    .dash-img img{width:100%;display:block}
-    .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
-    .metric{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px}
-    .metric strong{display:block;font-size:22px;font-weight:700;color:white}
-    .metric span{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px;display:block}
+/* ── hero ── */
+.hero{background:var(--navy);padding:150px 24px 0;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(74,158,255,.14) 0%,transparent 65%);pointer-events:none;animation:breathe 9s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.8;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.12)}}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(237,232,216,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(237,232,216,.045) 1px,transparent 1px);
+  background-size:58px 58px;
+  -webkit-mask-image:radial-gradient(ellipse 75% 62% at 50% 30%,black 30%,transparent 78%);
+  mask-image:radial-gradient(ellipse 75% 62% at 50% 30%,black 30%,transparent 78%)}
+.hero>*{position:relative;z-index:2}
+.hero .k{color:var(--blue);display:inline-flex;align-items:center;gap:8px}
+.hero .k i{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-family:var(--serif);font-size:clamp(44px,6.4vw,86px);line-height:1.02;letter-spacing:-.02em;color:#fff;margin:22px auto 20px;max-width:900px;font-weight:400}
+.hero h1 em{color:var(--blue)}
+.hero p{font-size:17px;color:rgba(255,255,255,.55);line-height:1.6;max-width:520px;margin:0 auto 34px}
+.hero-typer{min-height:55px}
+.caret{display:inline-block;width:2px;height:1.05em;background:var(--blue);margin-left:3px;vertical-align:-2px;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(max-width:600px){.hero-typer{min-height:84px}}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:100px;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:var(--sans);transition:transform .15s,background .2s,border-color .2s}
+.btn:active{transform:scale(.97)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:#3a8ee8;transform:translateY(-2px)}
+.btn-ghost-w{background:transparent;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.25)}
+.btn-ghost-w:hover{border-color:rgba(255,255,255,.55);color:#fff}
 
-    /* ── SPLIT ── */
-    .split{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-    .split.rev{direction:rtl}
-    .split.rev>*{direction:ltr}
-    .dash-card{border-radius:14px;overflow:hidden;box-shadow:0 16px 52px rgba(15,42,74,.15)}
-    .dash-card img{width:100%;display:block}
-    .dash-card.dark{box-shadow:0 16px 52px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.06)}
+.facts{display:grid;grid-template-columns:repeat(4,auto);gap:20px 64px;justify-content:center;margin:54px auto 62px;max-width:1000px}
+.facts>div{text-align:center}
+.facts .fv{font-family:var(--serif);font-size:clamp(30px,3.2vw,42px);line-height:1;color:var(--cream)}
+.facts .fv em{color:var(--blue)}
+.facts .fl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-top:9px}
+@media(max-width:960px){.facts{grid-template-columns:1fr 1fr;gap:26px 20px}}
 
-    /* ── INTELLIGENCE ── */
-    .intel-sec{background:var(--light)}
-    .feat-list{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:14px}
-    .feat-list li{display:flex;gap:13px;align-items:flex-start}
-    .feat-icon{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-    .feat-icon svg{width:15px;height:15px}
-    /* navy bg context (social section) */
-    .on-dark .feat-icon{background:rgba(74,158,255,.12)}
-    .on-dark .feat-list strong{color:white}
-    .on-dark .feat-list span{color:rgba(255,255,255,.55)}
-    /* light bg context (intel section) */
-    .on-light .feat-icon{background:rgba(15,42,74,.08)}
-    .on-light .feat-list strong{color:var(--navy)}
-    .on-light .feat-list span{color:var(--gray)}
+/* browser frame */
+.browser{border-radius:14px;overflow:hidden;background:var(--deep);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 40px 100px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.07)}
+.browser-bar{height:36px;display:flex;align-items:center;gap:6px;padding:0 16px;background:var(--deep)}
+.browser-bar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.14)}
+.browser-bar span{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.28);margin-left:12px;letter-spacing:.05em}
+.live-b{display:flex;align-items:center;gap:6px;margin-left:auto!important;color:#3BC28B!important}
+.live-b i{width:6px;height:6px;border-radius:50%;background:#3BC28B;animation:pulse 1.8s infinite}
+.live-b b{font-weight:500;color:#3BC28B}
+.hero-shot{max-width:1100px;margin:0 auto -150px;position:relative;z-index:2;perspective:1400px}
+.hero-shot .browser{transition:transform .18s ease-out;will-change:transform}
 
-    /* ── SOCIAL ── */
-    .social-sec{background:var(--navy)}
-    .social-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px}
-    .social-phones{display:flex;gap:16px;align-items:flex-end;justify-content:center}
-    .social-phone{filter:drop-shadow(0 20px 48px rgba(0,0,0,.45))}
-    .social-phone.sm{width:170px}
-    .social-phone.lg{width:200px}
-    .social-phone img{width:100%;display:block}
-    .intel-pill{background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.2);border-radius:14px;padding:16px 20px;margin-top:24px}
-    .intel-pill-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px}
-    .intel-pill p{font-size:13px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.5}
-    .pill-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-    .pill{background:rgba(74,158,255,.15);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--blue)}
+/* toast de actividad en vivo sobre el dashboard */
+.act-toast{position:absolute;top:52px;right:18px;display:inline-flex;align-items:center;gap:9px;width:max-content;max-width:calc(100% - 36px);background:#0B2038;border:1px solid rgba(74,158,255,.35);border-radius:12px;padding:10px 15px;z-index:6;opacity:0;transform:translateY(-10px);transition:opacity .45s ease,transform .45s ease;pointer-events:none;box-shadow:0 12px 32px rgba(0,0,0,.45)}
+.act-toast.show{opacity:1;transform:none}
+.act-toast i{width:7px;height:7px;border-radius:50%;background:#3BC28B;flex-shrink:0;animation:pulse 1.8s infinite}
+.act-toast span{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.85);letter-spacing:.02em;white-space:nowrap}
 
-    /* ── COMENSAL ── */
-    .comensal-sec{background:var(--cream)}
-    .journey-phones{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;align-items:flex-end;margin-top:56px}
-    .journey-card{display:flex;flex-direction:column;align-items:center;gap:16px}
-    .journey-step{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue)}
-    .journey-title{font-size:15px;font-weight:700;color:var(--navy);text-align:center}
-    .journey-desc{font-size:13px;color:var(--gray);text-align:center;line-height:1.55}
-    .journey-phone{filter:drop-shadow(0 16px 40px rgba(15,42,74,.18))}
-    .journey-phone img{width:100%;display:block}
+/* micro-interacciones */
+.btn{position:relative;overflow:hidden;will-change:transform}
+.btn svg{transition:transform .22s ease}
+.btn:hover svg{transform:translateX(4px)}
+.btn-blue::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.38) 50%,transparent 58%);transform:translateX(-130%)}
+.btn-blue:hover::after{animation:shine .75s ease}
+@keyframes shine{to{transform:translateX(130%)}}
+.link-arrow{transition:color .2s,padding-left .2s}
+.link-arrow:hover{padding-left:5px}
 
-    /* ── VPN SECTION ── */
-    .vpn-sec{background:var(--navy);padding:100px 64px;text-align:center;position:relative;overflow:hidden}
-    .vpn-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(74,158,255,.1) 0%,transparent 65%);pointer-events:none}
-    .vpn-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--blue);margin-bottom:24px}
-    .vpn-headline{font-family:'Instrument Serif',serif;font-size:clamp(36px,5.5vw,72px);line-height:1.04;letter-spacing:-2px;color:white;max-width:900px;margin:0 auto 20px}
-    .vpn-headline em{font-style:italic;color:var(--blue)}
-    .vpn-sub{font-size:14px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.35);max-width:640px;margin:0 auto 40px}
-    .btn-vpn{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:white;padding:16px 32px;border-radius:100px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-block}
-    .btn-vpn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
+/* marquee */
+.marquee{overflow:hidden;border-top:1px solid rgba(15,42,74,.1);border-bottom:1px solid rgba(15,42,74,.1);padding:15px 0;background:var(--white)}
+.mq-track{display:flex;width:max-content;animation:mq 36s linear infinite}
+.marquee:hover .mq-track{animation-play-state:paused}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-track span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,42,74,.45);padding:0 34px;white-space:nowrap;position:relative}
+.mq-track span::after{content:'·';position:absolute;right:-4px;color:var(--blue)}
+.mq-track b{color:var(--navy);font-weight:500}
 
-    /* ── VPN MODAL ── */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-    .modal-overlay.open{display:flex}
-    .modal{background:var(--cream);border-radius:24px;padding:40px;width:min(580px,92vw);max-height:90vh;overflow-y:auto;position:relative}
-    .modal-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:20px;color:var(--navy);cursor:pointer;opacity:.5;line-height:1;padding:4px 8px}
-    .modal-close:hover{opacity:1}
-    .modal h2{font-family:'Instrument Serif',serif;font-size:28px;letter-spacing:-.5px;color:var(--navy);margin-bottom:6px}
-    .modal p.sub{font-size:14px;color:var(--gray);margin-bottom:28px}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-    .form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--navy);opacity:.6;margin-bottom:6px}
-    .form-group input{width:100%;background:white;border:1.5px solid var(--cream2);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border-color .2s}
-    .form-group input:focus{border-color:var(--blue)}
-    .vpn-result{background:var(--navy);border-radius:14px;padding:22px 24px;margin-bottom:20px}
-    .vpn-result-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px}
-    .vpn-result-num{font-size:42px;font-weight:700;color:white;font-variant-numeric:tabular-nums}
-    .vpn-result-sub{font-size:13px;color:rgba(255,255,255,.45);margin-top:4px}
-    .vpn-chart{background:white;border-radius:12px;padding:20px}
-    .vpn-chart-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--navy);opacity:.4;margin-bottom:14px}
-    .bars{display:flex;gap:16px;align-items:flex-end;height:120px}
-    .bar-group{flex:1;display:flex;gap:4px;align-items:flex-end}
-    .bar{flex:1;border-radius:4px 4px 0 0;transition:height .4s ease}
-    .bar.nominal{background:var(--cream2)}
-    .bar.disc{background:var(--blue)}
-    .bar-labels{display:flex;gap:16px;margin-top:8px}
-    .bar-label{flex:1;text-align:center;font-size:11px;color:var(--gray)}
+/* ── showcase sticky ── */
+.showcase{background:var(--white);padding:230px 0 30px}
+.show-wrap{max-width:1160px;margin:60px auto 0;display:grid;grid-template-columns:7fr 5fr;gap:64px;align-items:start;padding:0 48px}
+.show-sticky{position:sticky;top:calc(50vh - min(29vw,330px))}
+.show-imgs{position:relative;aspect-ratio:2200/1215}
+.show-imgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .55s ease;border-radius:0 0 14px 14px}
+.show-imgs img.cur{opacity:1}
+.show-step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;transition:opacity .4s ease}
+.show-step:first-child{min-height:56vh}
+.show-step:last-child{min-height:60vh}
+.show-step.dim{opacity:.22}
+.show-step h2{font-family:var(--serif);font-size:clamp(26px,2.6vw,34px);line-height:1.22;letter-spacing:-.01em;font-weight:400}
+.show-step h2 em{color:var(--blue)}
+.show-step p{font-size:14.5px;color:var(--gray);line-height:1.65;margin-top:14px;max-width:380px}
+.show-step .k{color:var(--blue);margin-bottom:14px;display:block}
+.show-step .m-img{display:none}
 
-    /* ── CUSTOMER ── */
-    .customer-sec{background:var(--white)}
-    .alert-card{background:var(--navy);border-radius:14px;padding:22px;margin-top:24px}
-    .alert-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px}
-    .alert-card p{font-size:13px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.55}
-    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-    .tag{background:var(--cream);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--navy)}
+/* ── comparativa ── */
+.vs{background:var(--white);padding:110px 24px}
+.vs h2{font-family:var(--serif);font-size:clamp(30px,3.6vw,48px);font-weight:400;line-height:1.1;text-align:center}
+.vs h2 em{color:var(--blue)}
+.vs .sub{font-size:15px;color:var(--gray);text-align:center;margin:14px 0 46px}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:960px;margin:0 auto;align-items:stretch}
+.vs-card{border-radius:22px;padding:28px 32px 30px;display:flex;flex-direction:column}
+.vs-card .vs-h{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;height:34px;display:flex;align-items:center}
+.vs-card ul{list-style:none;display:flex;flex-direction:column;flex:1}
+.vs-card li{display:flex;gap:12px;align-items:center;font-size:14px;line-height:1.45;min-height:56px;padding:6px 0}
+.vs-card li+li{border-top:1px solid}
+.vs-card li i{font-style:normal;font-family:var(--mono);font-size:12px;flex-shrink:0}
+.vs-them{background:#FAF8F2;border:1px solid var(--cream2)}
+.vs-them .vs-h{color:rgba(15,42,74,.4)}
+.vs-them li{color:var(--gray)}
+.vs-them li+li{border-color:rgba(15,42,74,.07)}
+.vs-them li i{color:#C86A6A}
+.vs-etia{background:var(--navy);box-shadow:0 30px 80px rgba(15,42,74,.28)}
+.vs-etia .vs-h{color:var(--blue)}
+.vs-etia li{color:rgba(255,255,255,.85)}
+.vs-etia li+li{border-color:rgba(255,255,255,.08)}
+.vs-etia li i{color:#3BC28B}
+.vs-etia li b{color:#fff}
 
-    /* ── COSTS ── */
-    .costs-sec{background:var(--cream)}
-    .margin-row{display:flex;justify-content:space-between;align-items:center;background:white;border-radius:12px;padding:14px 18px;margin-bottom:8px}
-    .margin-name{font-size:14px;font-weight:600;color:var(--navy)}
-    .margin-pct{font-size:14px;font-weight:700}
-    .margin-pct.green{color:#16a34a}
-    .margin-pct.yellow{color:#d97706}
-    .margin-pct.red{color:#dc2626}
+.showcase .browser{box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 30px 80px rgba(15,42,74,.24),0 0 0 1px rgba(15,42,74,.06)}
 
-    /* ── HOW IT WORKS ── */
-    .how-sec{background:var(--navy)}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:60px}
-    .step-n{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);display:flex;align-items:center;gap:10px;margin-bottom:18px}
-    .step-n::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
-    .step h3{font-size:17px;font-weight:700;color:white;margin-bottom:10px;line-height:1.3}
-    .step p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+/* ── una noche con etia ── */
+.night{background:var(--cream);padding:100px 48px}
+.night h2{font-family:var(--serif);font-size:clamp(30px,3.6vw,48px);font-weight:400;line-height:1.1;text-align:center}
+.night h2 em{color:var(--blue)}
+.night-line{position:relative;max-width:1100px;margin:64px auto 0}
+.night-track{position:absolute;top:23px;left:6%;right:6%;height:1.5px;background:rgba(15,42,74,.14)}
+.night-fill{position:absolute;top:23px;left:6%;height:1.5px;width:0;background:var(--blue);transition:width 1.6s cubic-bezier(.22,.8,.3,1)}
+.night-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
+.night-step{text-align:center;padding:0 8px}
+.night-ic{width:48px;height:48px;border-radius:50%;background:var(--cream);border:1.5px solid rgba(15,42,74,.18);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;z-index:2;transition:border-color .4s,box-shadow .4s}
+.night-step.lit .night-ic{border-color:var(--blue);box-shadow:0 0 0 5px rgba(74,158,255,.12)}
+.night-ic svg{stroke:var(--blue)}
+.night-t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--blue);margin-bottom:9px}
+.night-step h3{font-family:var(--serif);font-size:19px;font-weight:400;margin-bottom:7px;line-height:1.25}
+.night-step p{font-size:13px;color:var(--gray);line-height:1.55}
 
-    /* ── PRICING ── */
-    .pricing-sec{background:var(--cream)}
-    .pricing-head{text-align:center;margin-bottom:52px}
-    .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:780px;margin:0 auto}
-    .price-card{background:white;border-radius:22px;padding:34px;border:1.5px solid var(--cream2);position:relative}
-    .price-card.f{background:var(--navy);border-color:var(--navy)}
-    .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:white;font-size:11px;font-weight:700;padding:4px 16px;border-radius:100px;white-space:nowrap}
-    .price-plan{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:10px}
-    .price-amt{font-size:40px;font-weight:700;line-height:1;color:var(--navy)}
-    .price-card.f .price-amt{color:white}
-    .price-per{font-size:12px;color:var(--gray);margin-bottom:6px}
-    .price-card.f .price-per{color:rgba(255,255,255,.4)}
-    .price-note{font-size:13px;color:var(--gray);margin-bottom:24px;line-height:1.45}
-    .price-card.f .price-note{color:rgba(255,255,255,.5)}
-    .price-div{height:1px;background:var(--cream2);margin-bottom:22px}
-    .price-card.f .price-div{background:rgba(255,255,255,.1)}
-    .price-feats{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:9px}
-    .price-feats li{font-size:13px;color:var(--gray);display:flex;gap:9px;align-items:flex-start;line-height:1.4}
-    .price-card.f .price-feats li{color:rgba(255,255,255,.7)}
-    .price-feats li::before{content:'';width:15px;height:15px;border-radius:50%;background:var(--cream);background-image:url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3.5L3 5.5L8 1' stroke='%230F2A4A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;flex-shrink:0;margin-top:1px}
-    .price-card.f .price-feats li::before{background-color:rgba(74,158,255,.15);background-image:url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3.5L3 5.5L8 1' stroke='%234A9EFF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
-    .price-cta{display:block;text-align:center;padding:13px;border-radius:13px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s}
-    .price-card:not(.f) .price-cta{background:var(--cream);color:var(--navy)}
-    .price-card:not(.f) .price-cta:hover{background:var(--cream2)}
-    .price-card.f .price-cta{background:var(--blue);color:white}
-    .price-card.f .price-cta:hover{background:#3a8ee8}
+/* ── vpn ── */
+.vpn{background:var(--deep);padding:110px 48px;position:relative;overflow:hidden}
+.vpn::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(74,158,255,.09),transparent 60%);pointer-events:none}
+.vpn-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative}
+.vpn h2{font-family:var(--serif);font-size:clamp(30px,3.4vw,46px);line-height:1.12;color:#fff;font-weight:400}
+.vpn h2 em{color:var(--blue)}
+.vpn .sub{font-size:15px;color:rgba(255,255,255,.45);line-height:1.65;margin-top:16px;max-width:400px}
+.calc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:28px}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.calc label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:7px}
+.calc input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;font-size:15px;font-family:var(--mono);color:#fff;outline:none;transition:border-color .2s}
+.calc input:focus{border-color:var(--blue)}
+.calc-out{border-top:1px solid rgba(255,255,255,.09);padding-top:20px}
+.calc-out .k{color:var(--blue)}
+.calc-num{font-family:var(--serif);font-size:52px;color:#fff;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.calc-sub{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.35);margin-top:6px}
 
-    /* ── FAQ ── */
-    .faq-sec{background:var(--white)}
-    .faq-list{margin-top:52px;max-width:780px;margin-left:auto;margin-right:auto;border-top:1px solid var(--cream2)}
-    .faq-item{border-bottom:1px solid var(--cream2)}
-    .faq-q{width:100%;background:none;border:none;padding:22px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;font-family:'Instrument Serif',serif;font-size:20px;color:var(--navy);font-style:italic;gap:16px}
-    .faq-q svg{flex-shrink:0;transition:transform .3s}
-    .faq-item.open .faq-q svg{transform:rotate(180deg)}
-    .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
-    .faq-item.open .faq-a{max-height:300px;padding-bottom:20px}
-    .faq-a p{font-size:15px;color:var(--gray);line-height:1.65}
+/* ── comensal teaser ── */
+.diner{background:var(--cream);padding:110px 48px;overflow:hidden}
+.diner-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.diner h2{font-family:var(--serif);font-size:clamp(30px,3.4vw,44px);line-height:1.12;font-weight:400}
+.diner h2 em{color:var(--blue)}
+.diner p{font-size:15px;color:var(--gray);line-height:1.65;margin:16px 0 30px;max-width:400px}
+.link-arrow{font-weight:700;font-size:15px;color:var(--navy);text-decoration:none;border-bottom:2px solid var(--blue);padding-bottom:3px;transition:color .2s}
+.link-arrow:hover{color:var(--blue)}
+.diner-phones{display:flex;gap:18px;align-items:flex-end;justify-content:center}
+.diner-phones img{border-radius:24px;box-shadow:0 24px 60px rgba(15,42,74,.28);height:auto}
+@keyframes floaty{0%,100%{margin-top:0}50%{margin-top:-12px}}
+.diner-phones .p1{width:190px;transform:translateY(18px) rotate(-3deg);animation:floaty 7s ease-in-out infinite}
+.diner-phones .p2{width:225px;z-index:2;animation:floaty 6s ease-in-out 1s infinite}
+.diner-phones .p3{width:190px;transform:translateY(24px) rotate(3deg);animation:floaty 7.5s ease-in-out 2s infinite}
 
-    /* ── DEMO MODAL ── */
-    .demo-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-    .demo-overlay.open{display:flex}
-    .demo-modal{background:white;border-radius:24px;padding:44px;width:min(520px,92vw);position:relative}
-    .demo-modal h2{font-family:'Instrument Serif',serif;font-size:28px;letter-spacing:-.5px;color:var(--navy);margin-bottom:6px}
-    .demo-modal .sub{font-size:14px;color:var(--gray);margin-bottom:28px}
-    .demo-form{display:flex;flex-direction:column;gap:14px}
-    .demo-form input{width:100%;background:var(--light);border:1.5px solid var(--cream2);border-radius:10px;padding:13px 16px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:none;transition:border-color .2s}
-    .demo-form input:focus{border-color:var(--blue);background:white}
-    .demo-form input::placeholder{color:rgba(15,42,74,.35)}
-    .demo-submit{background:var(--navy);color:white;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;margin-top:4px}
-    .demo-submit:hover{background:#162f52}
-    .demo-note{font-size:12px;color:var(--gray);text-align:center;margin-top:12px}
+/* ── pricing ── */
+.pricing{background:var(--white);padding:110px 24px;text-align:center}
+.pricing h2{font-family:var(--serif);font-size:clamp(30px,3.6vw,48px);font-weight:400;line-height:1.1}
+.pricing h2 em{color:var(--blue)}
+.pricing .sub{font-size:15px;color:var(--gray);margin:14px 0 44px}
+.price-card{background:var(--navy);border-radius:24px;padding:38px 36px;max-width:440px;margin:0 auto;text-align:left;position:relative;box-shadow:0 2px 4px rgba(15,42,74,.12),0 14px 32px rgba(15,42,74,.2),0 46px 100px rgba(15,42,74,.3)}
+.depth{transition:transform .25s ease,box-shadow .3s ease;will-change:transform}
+.price-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;gap:10px;flex-wrap:wrap}
+.price-amt{font-family:var(--serif);font-size:52px;color:#fff;line-height:1}
+.price-amt small{font-size:16px;color:rgba(255,255,255,.45);font-family:var(--sans)}
+.price-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(74,158,255,.35);border-radius:100px;padding:5px 12px;white-space:nowrap}
+.price-note{font-size:13.5px;color:rgba(255,255,255,.5);margin-bottom:24px}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.price-feats li{font-size:14px;color:rgba(255,255,255,.78);display:flex;gap:10px;align-items:baseline;line-height:1.45}
+.price-feats li::before{content:'—';color:var(--blue);flex-shrink:0}
+.price-cta{display:block;text-align:center;background:var(--blue);color:#fff;border-radius:14px;padding:15px;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s;cursor:pointer;border:none;width:100%;font-family:var(--sans)}
+.price-cta:hover{background:#3a8ee8}
+.price-chain{font-size:14px;color:var(--gray);margin-top:26px}
+.price-chain a{color:var(--navy);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--blue)}
 
-    /* ── CTA ── */
-    .cta-sec{background:var(--navy);text-align:center;padding:120px 64px}
-    .cta-sec h2{font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,68px);color:white;line-height:1.05;letter-spacing:-1.5px;max-width:780px;margin:0 auto 18px}
-    .cta-sec h2 em{font-style:italic;color:var(--blue)}
-    .cta-sec p{font-size:16px;color:rgba(255,255,255,.45);margin-bottom:40px}
-    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .btn-outline{background:transparent;color:rgba(255,255,255,.7);padding:14px 26px;border-radius:100px;border:1.5px solid rgba(255,255,255,.18);font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:all .2s}
-    .btn-outline:hover{border-color:rgba(255,255,255,.45);color:white}
+/* ── faq ── */
+.faq{background:var(--white);padding:40px 24px 110px}
+.faq-list{max-width:720px;margin:0 auto;border-top:1px solid var(--cream2)}
+.faq-item{border-bottom:1px solid var(--cream2)}
+.faq-q{width:100%;background:none;border:none;padding:20px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;text-align:left;font-family:var(--serif);font-size:19px;color:var(--navy);font-style:italic}
+.faq-q svg{flex-shrink:0;transition:transform .3s}
+.faq-item.open .faq-q svg{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-item.open .faq-a{max-height:280px}
+.faq-a p{font-size:14.5px;color:var(--gray);line-height:1.65;padding-bottom:20px}
 
-    /* ── FOOTER ── */
-    footer{background:#0a1f38;padding:40px 64px}
-    .foot-inner{max-width:1160px;margin:0 auto}
-    .foot-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.07)}
-    .foot-brand img{height:28px;display:block}
-    .foot-tagline{font-size:13px;color:rgba(255,255,255,.3);margin-top:10px}
-    .foot-cols{display:flex;gap:64px}
-    .foot-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-bottom:14px}
-    .foot-col a{display:block;font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:8px;transition:color .2s}
-    .foot-col a:hover{color:rgba(255,255,255,.8)}
-    .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:12px}
-    .foot-copy{font-size:12px;color:rgba(255,255,255,.22)}
-    .foot-legal{display:flex;gap:20px}
-    .foot-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none;cursor:pointer;transition:color .2s}
-    .foot-legal a:hover{color:rgba(255,255,255,.6)}
+/* ── voces del research ── */
+.voices{background:var(--white);padding:100px 24px;text-align:center}
+.voices .k{color:rgba(15,42,74,.4)}
+.voice-box{max-width:760px;margin:34px auto 0;min-height:150px;position:relative}
+.voice{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+.voice.cur{opacity:1}
+.voice blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.3;color:var(--navy)}
+.voice cite{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);font-style:normal;margin-top:20px}
+.voice-dots{display:flex;gap:9px;justify-content:center;margin-top:30px}
+.voice-dots button{width:7px;height:7px;border-radius:50%;border:none;background:rgba(15,42,74,.18);cursor:pointer;padding:0;transition:background .3s,transform .3s}
+.voice-dots button.cur{background:var(--blue);transform:scale(1.3)}
 
-    /* ── LEGAL MODAL ── */
-    .legal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-    .legal-overlay.open{display:flex}
-    .legal-modal{background:white;border-radius:20px;width:min(680px,94vw);max-height:85vh;overflow-y:auto;position:relative}
-    .legal-header{padding:32px 36px 20px;border-bottom:1px solid var(--cream2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;border-radius:20px 20px 0 0}
-    .legal-header h2{font-family:'Instrument Serif',serif;font-size:22px;color:var(--navy)}
-    .legal-body{padding:28px 36px 36px}
-    .legal-body h3{font-size:15px;font-weight:700;color:var(--navy);margin-top:24px;margin-bottom:8px}
-    .legal-body p{font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:12px}
-    .legal-body ul{padding-left:18px;margin-bottom:12px}
-    .legal-body ul li{font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:4px}
+/* ── calculadora de ahorro (sección propia) ── */
+.save-sec{background:var(--cream);padding:110px 24px;text-align:center}
+.save-sec h2{font-family:var(--serif);font-size:clamp(30px,3.6vw,48px);font-weight:400;line-height:1.1;color:var(--navy)}
+.save-sec h2 em{color:var(--blue)}
+.save-sec .sub{font-size:15px;color:var(--gray);margin:14px 0 48px}
+.save-box{max-width:880px;margin:0 auto}
+.save-box .k{color:rgba(15,42,74,.45)}
+.save-rev{font-family:var(--serif);font-size:clamp(44px,6vw,72px);color:var(--navy);line-height:1;margin:14px 0 30px;font-variant-numeric:tabular-nums}
+.save-slider{-webkit-appearance:none;appearance:none;width:100%;max-width:620px;height:6px;border-radius:99px;background:rgba(15,42,74,.16);outline:none;cursor:pointer}
+.save-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;border-radius:50%;background:var(--blue);border:4px solid var(--cream);box-shadow:0 3px 12px rgba(15,42,74,.35);cursor:grab;transition:transform .15s}
+.save-slider::-webkit-slider-thumb:hover{transform:scale(1.12)}
+.save-slider::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.18)}
+.save-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--blue);border:4px solid var(--cream);box-shadow:0 3px 12px rgba(15,42,74,.35);cursor:grab}
+.save-slider::-moz-range-track{height:6px;border-radius:99px;background:rgba(15,42,74,.16)}
+.save-note{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(15,42,74,.35);margin-top:14px}
+.save-res{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:14px;margin-top:48px;align-items:stretch}
+.save-cell{background:#fff;border:1px solid var(--cream2);border-radius:18px;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;gap:9px}
+.save-cell .sl{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,42,74,.42)}
+.save-cell .sv{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);color:var(--navy);font-variant-numeric:tabular-nums}
+.save-cell.win{background:var(--blue);border-color:var(--blue);box-shadow:0 2px 4px rgba(74,158,255,.2),0 12px 28px rgba(74,158,255,.28),0 42px 90px rgba(74,158,255,.35)}
+.save-cell.win .sl{color:rgba(255,255,255,.75)}
+.save-cell.win .sv{color:#fff;font-size:clamp(28px,3.2vw,42px)}
 
-    /* ── RESPONSIVE ── */
-    @media(max-width:960px){
-      nav{padding:0 24px}
-      .nav-links{display:none}
-      .sec{padding:72px 24px}
-      .hero{grid-template-columns:1fr;padding:100px 24px 64px;min-height:auto;gap:48px}
-      .hero-phones{height:auto}
-      .hero-phone.main{width:180px}
-      .hero-phone.back{width:160px}
-      .social-grid{grid-template-columns:1fr;gap:48px}
-      .split{grid-template-columns:1fr;direction:ltr}
-      .split.rev{direction:ltr}
-      .metrics-row{grid-template-columns:1fr 1fr}
-      .steps{grid-template-columns:1fr 1fr;gap:24px}
-      .journey-phones{grid-template-columns:1fr}
-      .pricing-grid{grid-template-columns:1fr;max-width:400px}
-      .cta-sec,.vpn-sec{padding:80px 24px}
-      footer{padding:32px 24px}
-      .foot-cols{gap:32px;flex-wrap:wrap}
-    }
-    @media(max-width:600px){
-      .hero h1{font-size:38px;letter-spacing:-1px}
-      .steps{grid-template-columns:1fr}
-      .metrics-row{grid-template-columns:1fr 1fr}
-      .form-grid{grid-template-columns:1fr}
-    }
-  </style>
+/* ── demos embebidas ── */
+.demo-ov{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px;z-index:7;background:linear-gradient(180deg,transparent 55%,rgba(11,32,56,.55));cursor:pointer;border:none;width:100%}
+.demo-ov span{display:inline-flex;align-items:center;gap:9px;background:var(--blue);color:#fff;font-family:var(--sans);font-size:14px;font-weight:700;padding:13px 24px;border-radius:100px;box-shadow:0 12px 32px rgba(0,0,0,.4);transition:transform .2s}
+.demo-ov:hover span{transform:translateY(-2px)}
+.demo-frame{width:100%;aspect-ratio:2200/1215;border:none;display:block;background:var(--deep)}
+.iphone{width:302px;background:#15151a;border-radius:50px;padding:10px;box-shadow:0 0 0 2px #3a3a40,0 36px 80px rgba(15,42,74,.4);margin:0 auto;position:relative}
+.iphone iframe{width:282px;height:600px;border:none;border-radius:41px;display:block;background:var(--navy)}
+.iphone-cap{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,42,74,.45);margin-top:18px}
+.iphone-cap b{color:var(--blue);font-weight:500}
+
+/* ── spotlight ── */
+.spot{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,40%),rgba(74,158,255,.08),transparent 65%);opacity:0;transition:opacity .5s}
+section:hover>.spot,header:hover>.spot{opacity:1}
+
+/* ── curvas entre secciones ── */
+.curve{display:block;width:100%;height:64px;margin-bottom:-1px}
+
+/* ── footer cta gigante ── */
+.foot-hero{position:relative;text-align:center;padding:104px 24px 88px;overflow:hidden}
+.foot-hero::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:820px;height:520px;background:radial-gradient(ellipse,rgba(74,158,255,.16) 0%,transparent 62%);pointer-events:none;animation:breathe 9s ease-in-out infinite}
+.foot-hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(237,232,216,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(237,232,216,.04) 1px,transparent 1px);
+  background-size:58px 58px;
+  -webkit-mask-image:radial-gradient(ellipse 62% 70% at 50% 45%,black 25%,transparent 75%);
+  mask-image:radial-gradient(ellipse 62% 70% at 50% 45%,black 25%,transparent 75%)}
+.foot-hero>*{position:relative;z-index:2}
+.foot-hero .k{color:rgba(237,232,216,.4);display:block;margin-bottom:26px}
+.foot-cta{background:none;border:none;cursor:pointer;display:inline-block;padding:0}
+.foot-cta .big{font-family:var(--serif);font-size:clamp(54px,8vw,116px);line-height:1;color:var(--cream);letter-spacing:-.02em;transition:color .3s;display:inline-flex;align-items:center;gap:.22em}
+.foot-cta .big em{color:var(--blue)}
+.foot-cta:hover .big{color:#fff}
+.foot-cta .circ{width:.72em;height:.72em;border:2.5px solid rgba(237,232,216,.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s,border-color .3s,transform .3s}
+.foot-cta .circ svg{width:45%;height:45%;transition:transform .3s}
+.foot-cta:hover .circ{background:var(--blue);border-color:var(--blue);transform:rotate(-45deg)}
+.foot-cta:hover .circ svg{transform:translateX(2px)}
+.foot-cta .big u{text-decoration:none;background-image:linear-gradient(var(--blue),var(--blue));background-repeat:no-repeat;background-position:0 96%;background-size:0% 3px;transition:background-size .45s cubic-bezier(.22,.8,.3,1)}
+.foot-cta:hover .big u{background-size:100% 3px}
+.foot-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+
+/* ── footer ── */
+footer{background:var(--deep);padding:70px 48px 36px;overflow:hidden}
+.foot{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.foot img{height:24px;opacity:.65}
+.foot-links{display:flex;gap:24px;flex-wrap:wrap}
+.foot-links a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;cursor:pointer}
+.foot-links a:hover{color:rgba(255,255,255,.8)}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.22);font-family:var(--mono)}
+
+/* ── modales ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(8,18,32,.72);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:20px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:22px;padding:40px;width:min(500px,100%);max-height:88vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:18px;right:18px;background:none;border:none;font-size:19px;color:var(--navy);cursor:pointer;opacity:.45;padding:6px 10px}
+.modal-close:hover{opacity:1}
+.modal h2{font-family:var(--serif);font-size:27px;font-weight:400;margin-bottom:6px}
+.modal .sub{font-size:14px;color:var(--gray);margin-bottom:26px}
+.dform{display:flex;flex-direction:column;gap:13px}
+.dform input{width:100%;background:#F7F5F0;border:1.5px solid var(--cream2);border-radius:11px;padding:13px 15px;font-size:14px;font-family:var(--sans);color:var(--navy);outline:none;transition:border-color .2s,background .2s}
+.dform input:focus{border-color:var(--blue);background:#fff}
+.dform button{background:var(--navy);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-top:4px;transition:background .2s}
+.dform button:hover{background:#16385f}
+.dnote{font-size:12px;color:var(--gray);text-align:center;margin-top:12px}
+.legal-modal{width:min(680px,100%)}
+.legal-modal h3{font-size:15px;font-weight:700;margin:22px 0 8px}
+.legal-modal p,.legal-modal li{font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:10px}
+.legal-modal ul{padding-left:18px}
+
+/* ── responsive ── */
+@media(max-width:960px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .burger{display:block}
+  .hero{padding:120px 18px 0}
+  .hero-shot{margin-bottom:-70px}
+  .showcase{padding:120px 0 20px}
+  .show-wrap{grid-template-columns:1fr;gap:0;margin-top:30px;padding:0 20px}
+  .show-sticky{display:none}
+  .show-step{min-height:0!important;padding:44px 0;opacity:1!important}
+  .show-step .m-img{display:block;margin-top:22px;border-radius:12px;box-shadow:0 18px 50px rgba(15,42,74,.22)}
+  .night{padding:64px 20px}
+  .night-steps{grid-template-columns:1fr;gap:38px}
+  .night-track,.night-fill{display:none}
+  .save{grid-template-columns:1fr;gap:28px;padding:28px 24px}
+  .voices{padding:70px 20px}
+  .voice-box{min-height:230px}
+  .foot-hero{padding:70px 20px 58px}
+  .foot-btns{margin-top:32px}
+  .iphone{width:262px}
+  .iphone iframe{width:242px;height:516px;border-radius:34px}
+  .vpn{padding:80px 20px}
+  .vpn-inner{grid-template-columns:1fr;gap:44px}
+  .diner{padding:80px 20px}
+  .diner-inner{grid-template-columns:1fr;gap:48px}
+  .diner-phones .p1,.diner-phones .p3{width:130px}
+  .diner-phones .p2{width:160px}
+  .pricing{padding:80px 20px}
+  .vs{padding:76px 20px}
+  .vs-grid{grid-template-columns:1fr}
+  .vs-card li{min-height:0;padding:12px 0}
+  .save-sec{padding:76px 20px}
+  .save-res{grid-template-columns:1fr}
+  footer{padding:30px 20px}
+  .foot{justify-content:center;text-align:center}
+}
+</style>
 </head>
-<body>
+<body class="pre">
+<noscript><style>body.pre nav,body.pre .hero .r{opacity:1!important;transform:none!important}.r,.rl,.rr{opacity:1!important;transform:none!important}</style></noscript>
 
-<!-- NAV -->
+<div id="pgbar" aria-hidden="true"></div>
+
 <nav id="nav">
-  <a href="#" class="nav-logo">
-    <img class="wm-cream" src="logo-cream.png" alt="Etia"/>
-    <img class="wm-navy"  src="logo-navy.png"  alt="Etia"/>
+  <a href="#" class="nav-logo" aria-label="Etia">
+    <img class="lg-cream" src="logo-cream.png" alt="Etia" width="90" height="30"/>
+    <img class="lg-navy" src="logo-navy.png" alt="Etia" width="90" height="30"/>
   </a>
   <ul class="nav-links">
-    <li><a href="#host">Host</a></li>
-    <li><a href="#red">Red social</a></li>
-    <li><a href="#comensal">Comensal</a></li>
+    <li><a href="#producto">Producto</a></li>
     <li><a href="#precios">Precios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="comensal.html">Para comensales</a></li>
+    <li><a class="nav-cta" href="demo-host.html">Probar demo</a></li>
   </ul>
-  <div class="nav-actions">
-    <button class="nav-demo" onclick="openDemo()">Probar demo</button>
-    <a href="#cta" class="nav-btn">Comenzar gratis</a>
-  </div>
+  <button class="burger" id="burger" aria-label="Menú" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div>
-    <div class="hero-tag r"><span></span>Plataforma gastronómica · Buenos Aires</div>
-    <h1 class="r d1">Tu restaurante,<br><em>en tiempo real.</em></h1>
-    <p class="hero-sub r d2">Menú digital, pedido desde el celular, pago dividido y una red social donde tus clientes construyen su identidad gastronómica.</p>
-    <div class="hero-btns r d3">
-      <a href="#cta" class="btn-blue">
-        Comenzar gratis
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <button class="btn-demo-hero" onclick="openDemo()">
-        Probar demo
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2l4.5 4.5L6.5 11M2 6.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-    <div class="hero-stats r d4">
-      <div><div class="stat-n">$36K</div><div class="stat-l">por mes, todo incluido</div></div>
-      <div><div class="stat-n">4.9</div><div class="stat-l">calificación comensales</div></div>
-      <div><div class="stat-n">1 tarde</div><div class="stat-l">para implementar</div></div>
-    </div>
-  </div>
-  <div class="hero-phones rr d1">
-    <div class="hero-phone back">
-      <img src="sc_feed.jpg" alt="Etia — red social gastronómica"/>
-    </div>
-    <div class="hero-phone main">
-      <img src="sc_mesa.jpg" alt="Etia — bienvenida en Casa Oliveira"/>
-    </div>
-  </div>
-</section>
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <div class="tick-item"><strong>68% margen · Salmón grillado</strong><span>Costos en tiempo real</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Carolina Méndez · $272.600 acumulado</strong><span>Top 5% clientes</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Red social gastronómica</strong><span>La primera en Argentina</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Etia Intelligence · 6 insights activos</strong><span>En tiempo real</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>$36.000/mes · todo incluido</strong><span>Sin comisiones por transacción</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Split de cuenta · propina individual</strong><span>Sin billetera física</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>68% margen · Salmón grillado</strong><span>Costos en tiempo real</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Carolina Méndez · $272.600 acumulado</strong><span>Top 5% clientes</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Red social gastronómica</strong><span>La primera en Argentina</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Etia Intelligence · 6 insights activos</strong><span>En tiempo real</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>$36.000/mes · todo incluido</strong><span>Sin comisiones por transacción</span></div><div class="tick-dot"></div>
-    <div class="tick-item"><strong>Split de cuenta · propina individual</strong><span>Sin billetera física</span></div><div class="tick-dot"></div>
-  </div>
+<div class="mnav" id="mnav">
+  <a href="#producto" onclick="toggleMenu()">Producto</a>
+  <a href="#precios" onclick="toggleMenu()">Precios</a>
+  <a href="#faq" onclick="toggleMenu()">FAQ</a>
+  <a href="comensal.html">Para comensales</a>
+  <a href="demo-host.html" style="color:var(--blue)">Probar demo →</a>
 </div>
 
-<!-- DASHBOARD OVERVIEW — primero porque el cliente pagador es el restaurante -->
-<section class="sec dash-sec" id="host">
-  <div class="sec-inner">
-    <div style="text-align:center">
-      <div class="r"><div class="eyebrow">Etia Host</div></div>
-      <h2 class="sec-h w r d1">Tu restaurante,<br><em>en vivo.</em></h2>
-      <p class="sec-p w r d2" style="margin:18px auto 0">Ingresos del día, cubiertos activos, ticket promedio, márgenes por plato y rendimiento del equipo. Todo en una sola pantalla, en tiempo real.</p>
+<!-- HERO -->
+<header class="hero">
+  <h1 class="r on">Tu restaurante,<br><em>en tiempo real.</em></h1>
+  <p class="r on d1 hero-typer"><span id="typer">El comensal escanea, pide y paga desde su celular. Vos lo ves todo en vivo.</span><span class="caret" aria-hidden="true"></span></p>
+  <div class="hero-btns r on d2">
+    <a class="btn btn-blue" href="demo-host.html">Probar la demo
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <button class="btn btn-ghost-w" onclick="openDemoForm()">Pedir una demo guiada</button>
+  </div>
+  <div class="facts r on d3">
+    <div><div class="fv">Sin <em>hardware</em></div><div class="fl">Solo un QR en la mesa</div></div>
+    <div><div class="fv"><em>1</em> tarde</div><div class="fl">De implementación</div></div>
+    <div><div class="fv">$36.000<em>/mes</em></div><div class="fl">Todo incluido</div></div>
+    <div><div class="fv"><em>0%</em> comisión</div><div class="fl">Por transacción</div></div>
+  </div>
+  <div class="hero-shot r on d2">
+    <div class="browser">
+      <div class="browser-bar"><i></i><i></i><i></i><span>host.etia.com.ar</span><span class="live-b"><i></i>EN VIVO · <b id="live-time">21:34</b></span></div>
+      <div style="position:relative" id="heroDemo">
+        <img src="dash_overview.jpg" alt="Etia Host — el servicio de hoy, en vivo" width="2200" height="1215" fetchpriority="high"/>
+        <button class="demo-ov" onclick="activateHeroDemo()" aria-label="Explorar el dashboard en vivo">
+          <span><svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor"><path d="M0 0l12 7-12 7z"/></svg>Explorar el dashboard en vivo</span>
+        </button>
+      </div>
     </div>
-    <div class="dash-img rs d2">
-      <img src="sc_dash_0.jpg" alt="Etia Host — dashboard principal"/>
-    </div>
-    <div class="metrics-row">
-      <div class="metric r d1"><strong>$186.400</strong><span>Ingresos del día</span></div>
-      <div class="metric r d2"><strong>34</strong><span>Cubiertos activos</span></div>
-      <div class="metric r d3"><strong>$5.482</strong><span>Ticket promedio</span></div>
-      <div class="metric r d4"><strong>+12%</strong><span>vs. semana anterior</span></div>
+    <div class="act-toast" id="actToast"><i></i><span id="actMsg">Mesa 7 · pagó $24.300 — propina 10%</span></div>
+  </div>
+</header>
+
+<!-- PRODUCTO · SHOWCASE STICKY -->
+<section class="showcase" id="producto">
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track" id="mqTrack">
+      <span>Mesa 12 · <b>pagó $18.150</b></span><span>Etia Intelligence · <b>6 insights activos</b></span><span>Reserva confirmada · <b>sábado 21:00</b></span><span>Salmón grillado · <b>68% margen</b></span><span>Carolina M. · <b>+185 pts otorgados</b></span><span>Servicio de cena · <b>en vivo</b></span>
     </div>
   </div>
-</section>
-
-<!-- ETIA INTELLIGENCE -->
-<section class="sec intel-sec">
-  <div class="sec-inner">
-    <div class="split on-light">
-      <div class="rl">
-        <div class="eyebrow">Etia Intelligence</div>
-        <h2 class="sec-h" style="margin-top:4px">Insights que<br><em>se accionan.</em></h2>
-        <p class="sec-p">No es un reporte que mirás al final del mes. Etia Intelligence analiza tu negocio en tiempo real y te dice qué hacer hoy: qué plato destacar, qué cliente llamar, qué turno reforzar.</p>
-        <ul class="feat-list" style="margin-top:28px">
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><rect x="2" y="9" width="2.5" height="4" rx=".8" fill="var(--blue)"/><rect x="6.2" y="6" width="2.5" height="7" rx=".8" fill="var(--blue)"/><rect x="10.5" y="2.5" width="2.5" height="10.5" rx=".8" fill="var(--blue)"/></svg></div>
-            <div><strong>Menú</strong><span>El salmón grillado tiene margen del 68%. Destacarlo este fin de semana podría aumentar el ingreso neto en +$12.000.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.2" stroke="var(--blue)" stroke-width="1.2"/><path d="M2.5 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><strong>Retención</strong><span>3 clientes frecuentes llevan más de 21 días sin visitar. Valor histórico combinado: $48.600.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="var(--blue)" stroke-width="1.2"/><path d="M7.5 4.5v3l1.8 1.3" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><strong>Demanda</strong><span>El sábado próximo se proyectan +12% cubiertos vs. el anterior. Considerá reforzar el turno noche.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><path d="M7.5 2l1.3 2.7 3 .44-2.16 2.1.51 2.96L7.5 8.85 4.85 10.2l.51-2.96L3.2 5.14l3-.44z" stroke="var(--blue)" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
-            <div><strong>Equipo</strong><span>Valentina Rojas tiene el ticket promedio más alto ($6.120). Su turno noche genera +34% ingresos vs. el equipo.</span></div>
-          </li>
-        </ul>
-      </div>
-      <div class="rr d1">
-        <div class="dash-card">
-          <img src="sc_dash_6.jpg" alt="Etia Intelligence — 6 insights activos"/>
+  <div class="show-wrap">
+    <div class="show-sticky">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i><span id="show-url">host.etia.com.ar</span></div>
+        <div class="show-imgs">
+          <img src="dash_overview.jpg" class="cur" alt="Etia Host — el servicio de hoy" loading="lazy"/>
+          <img src="dash_intelligence.jpg" alt="Etia Intelligence" loading="lazy"/>
+          <img src="dash_costos.jpg" alt="Costos y márgenes" loading="lazy"/>
+          <img src="dash_cliente.jpg" alt="Perfil de cliente" loading="lazy"/>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- CLIENTE: CAROLINA MÉNDEZ -->
-<section class="sec customer-sec">
-  <div class="sec-inner">
-    <div class="split rev">
-      <div class="rl d1">
-        <div class="dash-card">
-          <img src="sc_dash_5.jpg" alt="Carolina Méndez — perfil de cliente"/>
-        </div>
+    <div class="show-steps" id="showSteps">
+      <div class="show-step" data-url="host.etia.com.ar">
+        <span class="k">El servicio, en vivo</span>
+        <h2>Ingresos, cubiertos, ticket y equipo. <em>Todo el servicio en una pantalla.</em></h2>
+        <p>Actualizado segundo a segundo, desde el local o desde tu casa.</p>
+        <img class="m-img" src="dash_overview.jpg" alt="" loading="lazy"/>
       </div>
-      <div class="rr">
-        <div class="eyebrow">Perfiles de clientes</div>
-        <h2 class="sec-h" style="margin-top:4px">Cada cliente,<br>con nombre<br><em>y apellido.</em></h2>
-        <p class="sec-p">Etia construye automáticamente el perfil de cada comensal frecuente: historial de visitas, platos favoritos, mozo de preferencia y notas del equipo. Sin que hagas nada.</p>
-        <div class="alert-card">
-          <div class="alert-label">Etia Intelligence · Alerta de retención</div>
-          <p>"Carolina no te visita hace 23 días. Antes venía cada 14 días en promedio. Es una clienta de alto valor — recomendamos enviarle una invitación personalizada con beneficio."</p>
-        </div>
-        <div class="tag-row">
-          <span class="tag">47 visitas</span>
-          <span class="tag">$5.800 ticket</span>
-          <span class="tag">820 Etia pts</span>
-          <span class="tag">Top 5% clientes</span>
-        </div>
+      <div class="show-step dim" data-url="host.etia.com.ar/intelligence">
+        <span class="k">Etia Intelligence</span>
+        <h2>Te dice qué hacer hoy: qué plato destacar, a quién llamar, <em>qué turno reforzar.</em></h2>
+        <p>Corre solo, en tiempo real. Cada insight trae su acción: vos decidís con un tap.</p>
+        <img class="m-img" src="dash_intelligence.jpg" alt="" loading="lazy"/>
+      </div>
+      <div class="show-step dim" data-url="host.etia.com.ar/costos">
+        <span class="k">Costos y márgenes</span>
+        <h2>El margen real de cada plato — con merma, <em>ingrediente por ingrediente.</em></h2>
+        <p>La mayoría de los dueños no conoce el margen real de su carta. Vos lo vas a ver actualizarse solo.</p>
+        <img class="m-img" src="dash_costos.jpg" alt="" loading="lazy"/>
+      </div>
+      <div class="show-step dim" data-url="host.etia.com.ar/clientes">
+        <span class="k">Clientes</span>
+        <h2>Cada cliente frecuente, con nombre, historial y <em>alertas de retención.</em></h2>
+        <p>Carolina lleva 23 días sin venir y antes venía cada 14. Etia te avisa antes de que la pierdas.</p>
+        <img class="m-img" src="dash_cliente.jpg" alt="" loading="lazy"/>
       </div>
     </div>
   </div>
 </section>
 
-<!-- COSTOS Y MÁRGENES -->
-<section class="sec costs-sec">
-  <div class="sec-inner">
-    <div class="split">
-      <div class="rl">
-        <div class="eyebrow">Costos y márgenes</div>
-        <h2 class="sec-h" style="margin-top:4px">El margen real<br>de cada<br><em>plato.</em></h2>
-        <p class="sec-p">El 92% de los dueños no conoce el margen real de sus platos. Etia lo calcula automáticamente incluyendo merma, costo por ingrediente e ingreso neto proyectado.</p>
-        <div style="margin-top:28px">
-          <div class="margin-row"><span class="margin-name">Salmón grillado</span><span class="margin-pct green">68% margen</span></div>
-          <div class="margin-row"><span class="margin-name">Ensalada de quinoa</span><span class="margin-pct green">65% margen</span></div>
-          <div class="margin-row"><span class="margin-name">Bife de chorizo</span><span class="margin-pct green">54% margen</span></div>
-          <div class="margin-row"><span class="margin-name">Tallarines al pesto</span><span class="margin-pct yellow">41% margen</span></div>
-          <div class="margin-row"><span class="margin-name">Hamburguesa clásica</span><span class="margin-pct red">29% margen</span></div>
-        </div>
-        <p style="font-size:12px;color:var(--gray);margin-top:14px">Ingreso neto proyectado: <strong>$212.412</strong> · +12% vs. ayer</p>
+<!-- UNA NOCHE CON ETIA -->
+<section class="night">
+  <h2 class="r">La vida de <em>una mesa.</em></h2>
+  <div class="night-line" id="nightLine">
+    <div class="night-track"></div>
+    <div class="night-fill" id="nightFill"></div>
+    <div class="night-steps">
+      <div class="night-step r" >
+        <div class="night-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg></div>
+        <div class="night-t">20:32</div>
+        <h3>La mesa 12 escanea</h3>
+        <p>Sesión activa al instante. Sin app, sin registro, sin mozo bloqueado.</p>
       </div>
-      <div class="rr d1">
-        <div class="dash-card">
-          <img src="sc_dash_2.jpg" alt="Panel de costos y márgenes por plato"/>
-        </div>
+      <div class="night-step r d1">
+        <div class="night-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M12 4v1M9 19h6"/></svg></div>
+        <div class="night-t">20:41</div>
+        <h3>El pedido entra a cocina</h3>
+        <p>La carta con fotos vende sola. El total se arma en vivo, ítem por ítem.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- RED SOCIAL -->
-<section class="sec social-sec" id="red">
-  <div class="sec-inner">
-    <div style="text-align:center;margin-bottom:56px">
-      <div class="r"><div class="eyebrow">Red gastronómica</div></div>
-      <h2 class="sec-h w r d1">La primera red social<br><em>gastronómica</em> de Argentina.</h2>
-      <p class="sec-p w r d2" style="margin:18px auto 0;max-width:560px">Etia no es solo un QR de pago. Es donde los comensales construyen su identidad culinaria y la comparten con su red.</p>
-    </div>
-    <div class="social-grid">
-      <div class="rr d1" style="display:flex;gap:16px;align-items:flex-end;justify-content:center">
-        <div class="social-phone sm"><img src="sc_explorar.jpg" alt="Explorar restaurantes"/></div>
-        <div class="social-phone lg"><img src="sc_feed.jpg" alt="Feed social gastronómico"/></div>
+      <div class="night-step r d2">
+        <div class="night-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <div class="night-t">21:34</div>
+        <h3>Pagan y dividen</h3>
+        <p>En partes iguales o por ítem, propina incluida. 0% de comisión.</p>
       </div>
-      <div class="rl on-dark" style="display:flex;flex-direction:column">
-        <ul class="feat-list">
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.2" stroke="var(--blue)" stroke-width="1.2"/><path d="M2.5 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><strong>Feed social</strong><span>Martina F. comparte la molleja glaseada de La Carnicería. Tus amigos reaccionan y se anotan para ir.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><path d="M7.5 2l1.3 2.7 3 .44-2.16 2.1.51 2.96L7.5 8.85 4.85 10.2l.51-2.96L3.2 5.14l3-.44z" stroke="var(--blue)" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
-            <div><strong>Etia Points</strong><span>735 pts · Cada visita acumula puntos transversales a toda la red. Etia Gold, Silver, Explorer.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2" stroke="var(--blue)" stroke-width="1.2"/><circle cx="10" cy="5" r="2" stroke="var(--blue)" stroke-width="1.2"/><path d="M1 13c0-2.2 1.8-4 4-4M6 13c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><strong>Explorar</strong><span>Descubrí restaurantes a través de tu red. Casa Oliveira — Etia Pick del Día, 20% off hoy, mesas disponibles.</span></div>
-          </li>
-          <li>
-            <div class="feat-icon"><svg viewBox="0 0 15 15" fill="none"><rect x="2" y="3" width="11" height="9" rx="2" stroke="var(--blue)" stroke-width="1.2"/><path d="M5 3V2M10 3V2M2 7h11" stroke="var(--blue)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><strong>Etia Wrapped</strong><span>Al año: tu restaurante favorito, tu plato más repetido, cuántos amigos llevaste. Como Spotify Wrapped, para la gastronomía.</span></div>
-          </li>
-        </ul>
-        <div class="intel-pill">
-          <div class="intel-pill-label">Etia Intelligence · Tu perfil</div>
-          <p>"Sos un explorador mediterráneo. Te atraen los sabores frescos y los restaurantes de autor. Tus amigos confían en tus recomendaciones."</p>
-          <div class="pill-row">
-            <span class="pill">Mediterráneo</span><span class="pill">Japonés</span><span class="pill">Parrilla</span><span class="pill">Sin TACC</span>
-          </div>
-        </div>
+      <div class="night-step r d3">
+        <div class="night-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 17l5-6 4 3 6-8"/><path d="M17 6h4v4"/></svg></div>
+        <div class="night-t">21:34</div>
+        <h3>Tu dashboard lo registra</h3>
+        <p>El ticket suma al día, el perfil del cliente crece y la IA ya está mirando.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- COMENSAL JOURNEY -->
-<section class="sec comensal-sec" id="comensal">
-  <div class="sec-inner">
-    <div style="text-align:center">
-      <div class="r"><div class="eyebrow">Para el comensal</div></div>
-      <h2 class="sec-h r d1">Sin esperas.<br><em>Todo desde tu celular.</em></h2>
-      <p class="sec-p r d2" style="margin:18px auto 0">Escanear el QR, navegar el menú, pedir y pagar — dividiendo la cuenta como quieras. Sin app, sin hardware, sin fricción.</p>
+<!-- COMPARATIVA -->
+<section class="vs">
+  <h2 class="r">Con otra plataforma, <em>y con Etia.</em></h2>
+  <p class="sub r d1">La diferencia no es una feature. Es el modelo.</p>
+  <div class="vs-grid">
+    <div class="vs-card vs-them r d1">
+      <div class="vs-h">Con otra plataforma</div>
+      <ul>
+        <li><i>✕</i>3% a 7% de comisión por cada transacción</li>
+        <li><i>✕</i>Posnet, tablets o hardware alquilado</li>
+        <li><i>✕</i>Semanas de implementación y capacitación</li>
+        <li><i>✕</i>Clientes anónimos: tickets sin nombre</li>
+        <li><i>✕</i>Reportes que llegan a fin de mes</li>
+        <li><i>✕</i>Fidelización con cupones genéricos</li>
+      </ul>
     </div>
-    <div class="journey-phones">
-      <div class="journey-card r d1">
-        <div class="journey-step">01 · Llegás</div>
-        <div class="journey-phone" style="width:100%;max-width:220px;margin:0 auto">
-          <img src="sc_mesa.jpg" alt="Bienvenida en Casa Oliveira"/>
-        </div>
-        <div class="journey-title">Escanear el QR de la mesa</div>
-        <div class="journey-desc">Al sentarte escaneas el código. La app reconoce tu mesa al instante — sin descargar nada.</div>
+    <div class="vs-card vs-etia r d2">
+      <div class="vs-h">Con Etia</div>
+      <ul>
+        <li><i>✓</i><span><b>0% de comisión.</b> Tarifa fija de $36.000/mes</span></li>
+        <li><i>✓</i><span><b>Solo un QR</b> impreso en cada mesa</span></li>
+        <li><i>✓</i><span><b>Una tarde</b> y estás operando</span></li>
+        <li><i>✓</i><span><b>Perfil e historial</b> de cada cliente frecuente</span></li>
+        <li><i>✓</i><span><b>Insights accionables hoy,</b> en tiempo real</span></li>
+        <li><i>✓</i><span><b>Puntos + red social</b> que trae gente nueva</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULADORA DE AHORRO -->
+<section class="save-sec">
+  <h2 class="r">La comisión que no pagás, <em>se queda con vos.</em></h2>
+  <p class="sub r d1">Movelo con tus números.</p>
+  <div class="save-box r d1">
+    <label class="k" for="s-rev">¿Cuánto factura tu local por mes?</label>
+    <div class="save-rev" id="s-rev-val">$ 12.000.000</div>
+    <input class="save-slider" type="range" id="s-rev" min="2000000" max="60000000" step="500000" value="12000000" oninput="calcSave()" aria-label="Facturación mensual"/>
+    <div class="save-note">vs. comisión promedio del 5% de otras plataformas</div>
+    <div class="save-res">
+      <div class="save-cell"><span class="sl">Otra plataforma · 5% anual</span><span class="sv" id="s-them">$ 7.200.000</span></div>
+      <div class="save-cell"><span class="sl">Etia · tarifa fija anual</span><span class="sv">$ 432.000</span></div>
+      <div class="save-cell win"><span class="sl">Te ahorrás por año</span><span class="sv" id="s-win">$ 6.768.000</span></div>
+    </div>
+  </div>
+</section>
+
+<svg class="curve" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true" style="background:var(--cream)"><path d="M0,64 C420,4 1020,4 1440,64 L1440,64 L0,64 Z" fill="var(--deep)"/></svg>
+
+<!-- VPN -->
+<section class="vpn">
+  <div class="vpn-inner">
+    <div class="r">
+      <h2>Un cliente frecuente vale más de <em>$1.3M</em> en 3 años.<br><em>¿Sabés cuánto vale el tuyo?</em></h2>
+      <p class="sub">Cada cliente que no reconocés es plata que se va por la puerta sin que la veas. Calculalo con tus números.</p>
+    </div>
+    <div class="calc r d1">
+      <div class="calc-grid">
+        <div><label>Ticket promedio (ARS)</label><input type="number" id="v-ticket" value="25000" oninput="calcVPN()"/></div>
+        <div><label>Visitas por mes</label><input type="number" id="v-visits" value="2" oninput="calcVPN()"/></div>
+        <div><label>Horizonte (años)</label><input type="number" id="v-years" value="3" oninput="calcVPN()"/></div>
+        <div><label>Tasa de descuento (%)</label><input type="number" id="v-rate" value="15" oninput="calcVPN()"/></div>
       </div>
-      <div class="journey-card r d2">
-        <div class="journey-step">02 · Pedís</div>
-        <div class="journey-phone" style="width:100%;max-width:220px;margin:0 auto">
-          <img src="sc_carta.jpg" alt="Carta del restaurante"/>
-        </div>
-        <div class="journey-title">Navegás el menú y pedís</div>
-        <div class="journey-desc">Fotos, descripciones y precios claros. Pedido directo desde tu celular, sin esperar al mozo.</div>
-      </div>
-      <div class="journey-card r d3">
-        <div class="journey-step">03 · Pagás</div>
-        <div class="journey-phone" style="width:100%;max-width:220px;margin:0 auto">
-          <img src="sc_pago.jpg" alt="Pagar y dividir la cuenta"/>
-        </div>
-        <div class="journey-title">Pagás y dividís como quieras</div>
-        <div class="journey-desc">Pagar todo, en partes iguales o por ítem. Propina incluida. Sin billetera física.</div>
+      <div class="calc-out">
+        <div class="k">Valor presente neto</div>
+        <div class="calc-num" id="v-result">$ 1.369.935</div>
+        <div class="calc-sub" id="v-gross">INGRESO BRUTO EN 3 AÑOS: $ 1.800.000</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- VPN SECTION -->
-<section class="vpn-sec">
-  <div class="r"><div class="vpn-eyebrow">El costo invisible</div></div>
-  <h2 class="vpn-headline r d1">El valor presente neto de<br>un cliente frecuente puede<br>superar los <em>$360.000</em> en 3 años.<br><em>¿Sabés cuánto vale el tuyo?</em></h2>
-  <p class="vpn-sub r d2">Cada cliente que no reconocés es plata que se va por la puerta sin que la veas.</p>
-  <button class="btn-vpn r d3" onclick="openVPN()">Calcular el VPN de mi cliente promedio</button>
+<svg class="curve" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true" style="background:var(--deep)"><path d="M0,64 C420,4 1020,4 1440,64 L1440,64 L0,64 Z" fill="var(--cream)"/></svg>
+
+<!-- COMENSAL TEASER -->
+<section class="diner">
+  <div class="diner-inner">
+    <div class="r">
+      <h2>Del otro lado de la mesa, Etia es <em>una red social.</em></h2>
+      <p>Tus clientes registran cada visita, la comparten con amigos y suman puntos que los traen de vuelta. Cada mesa servida trabaja para la próxima.</p>
+      <a class="link-arrow" href="comensal.html">Conocé la experiencia del comensal →</a>
+    </div>
+    <div class="r d1">
+      <div class="iphone">
+        <iframe id="dinerDemo" title="Demo en vivo de la app del comensal" loading="lazy"></iframe>
+      </div>
+      <div class="iphone-cap"><b>Demo en vivo</b> — tocala, es la app real</div>
+    </div>
+  </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="sec how-sec">
-  <div class="sec-inner">
-    <div style="text-align:center">
-      <div class="r"><div class="eyebrow">Cómo funciona</div></div>
-      <h2 class="sec-h w r d1" style="max-width:520px;margin:0 auto">Del QR a la mesa,<br><em>todo conectado.</em></h2>
+<!-- VOCES DEL RESEARCH -->
+<section class="voices">
+  <div class="k r">Lo que escuchamos en las entrevistas</div>
+  <div class="voice-box r d1" id="voiceBox">
+    <div class="voice cur">
+      <blockquote>"Nunca supe cuánto me dejaba de verdad la milanesa. Lo calculaba a ojo."</blockquote>
+      <cite>Dueño de bodegón · Villa Crespo</cite>
     </div>
-    <div class="steps">
-      <div class="step r d1">
-        <div class="step-n">01</div>
-        <h3>El comensal escanea</h3>
-        <p>Escanea el QR en la mesa. Navega el menú, hace el pedido y paga dividiendo como quiera. Sin app, sin espera.</p>
-      </div>
-      <div class="step r d2">
-        <div class="step-n">02</div>
-        <h3>El dueño ve en tiempo real</h3>
-        <p>Ingresos, cubiertos, ticket y márgenes por plato en vivo. Desde el celular, sin ir al local.</p>
-      </div>
-      <div class="step r d3">
-        <div class="step-n">03</div>
-        <h3>La IA detecta oportunidades</h3>
-        <p>Etia Intelligence genera insights accionables: qué destacar, qué cliente llamar, qué turno reforzar esta semana.</p>
-      </div>
-      <div class="step r d4">
-        <div class="step-n">04</div>
-        <h3>La red social crece sola</h3>
-        <p>Cada visita fortalece el perfil del comensal. Cada post en el feed es una recomendación real a su red de amigos.</p>
-      </div>
+    <div class="voice">
+      <blockquote>"El sábado a la noche pierdo mesas porque no doy abasto con la cuenta."</blockquote>
+      <cite>Encargada de parrilla · Palermo</cite>
     </div>
+    <div class="voice">
+      <blockquote>"Tengo clientes de todas las semanas y no sé ni cómo se llaman."</blockquote>
+      <cite>Dueño de café de especialidad · Chacarita</cite>
+    </div>
+  </div>
+  <div class="voice-dots r d2" id="voiceDots">
+    <button class="cur" onclick="setVoice(0)" aria-label="Frase 1"></button>
+    <button onclick="setVoice(1)" aria-label="Frase 2"></button>
+    <button onclick="setVoice(2)" aria-label="Frase 3"></button>
   </div>
 </section>
 
 <!-- PRICING -->
-<section class="sec pricing-sec" id="precios">
-  <div class="sec-inner">
-    <div class="pricing-head">
-      <div class="r"><div class="eyebrow">Precios</div></div>
-      <h2 class="sec-h r d1">Simple.<br><em>Todo incluido.</em></h2>
-      <p class="sec-p r d2" style="margin:16px auto 0">Primer mes gratis. Sin tarjeta. Sin hardware.</p>
+<section class="pricing" id="precios">
+  <div class="k r" style="color:var(--blue);margin-bottom:18px">Diseñado con dueños de restaurantes de Palermo y Villa Crespo</div>
+  <h2 class="r">Un plan. <em>Todo incluido.</em></h2>
+  <p class="sub r d1">Primer mes gratis. Sin tarjeta, sin permanencia, sin hardware.</p>
+  <div class="price-card r d1">
+    <div class="price-top">
+      <div class="price-amt">$36.000<small> /mes</small></div>
+      <span class="price-tag">Primer mes gratis</span>
     </div>
-    <div class="pricing-grid">
-      <div class="price-card f r d2">
-        <div class="price-badge">Todo incluido · sin sorpresas</div>
-        <div class="price-plan">Pro</div>
-        <div class="price-amt">$36.000</div>
-        <div class="price-per">/mes · primer mes gratis</div>
-        <div class="price-note">Acceso completo desde el día uno. Sin versiones recortadas ni funcionalidades bloqueadas.</div>
-        <div class="price-div"></div>
-        <ul class="price-feats">
-          <li>Menú digital con QR</li>
-          <li>Pedido y pago desde el celular</li>
-          <li>Split de cuenta · propina individual</li>
-          <li>Dashboard de ventas en tiempo real</li>
-          <li>Costos y márgenes por plato</li>
-          <li>Perfiles de clientes frecuentes</li>
-          <li>Etia Intelligence · 6 tipos de insight</li>
-          <li>Rendimiento del equipo por mozo</li>
-          <li>Gestión de reservas</li>
-          <li>Red social gastronómica · Etia Points</li>
-        </ul>
-        <a href="#cta" class="price-cta">Probar 30 días gratis</a>
-      </div>
-      <div class="price-card r d3">
-        <div class="price-plan">Cadena</div>
-        <div class="price-amt" style="font-size:30px">A medida</div>
-        <div class="price-per">para múltiples sucursales</div>
-        <div class="price-note">Para grupos gastronómicos que necesitan gestión centralizada entre locales.</div>
-        <div class="price-div"></div>
-        <ul class="price-feats">
-          <li>Todo lo del plan Pro</li>
-          <li>Vista consolidada multi-sede</li>
-          <li>Reportes unificados entre locales</li>
-          <li>API e integraciones</li>
-          <li>Onboarding dedicado</li>
-        </ul>
-        <a href="#cta" class="price-cta">Hablar con ventas</a>
-      </div>
-    </div>
+    <p class="price-note">Acceso completo desde el día uno. Sin versiones recortadas.</p>
+    <ul class="price-feats">
+      <li>Menú digital, pedido y pago con QR — split y propina incluidos</li>
+      <li>Dashboard en vivo: ingresos, cubiertos, ticket y equipo</li>
+      <li>Costos y márgenes por plato</li>
+      <li>Perfiles de clientes frecuentes con alertas de retención</li>
+      <li>Etia Intelligence · insights accionables</li>
+      <li>Reservas + presencia en la red social de comensales</li>
+    </ul>
+    <button class="price-cta" onclick="openDemoForm()">Empezar — primer mes gratis</button>
   </div>
+  <p class="price-chain r d2">¿Más de un local? <a href="mailto:ventas@etia.com.ar?subject=Etia%20para%20cadenas">Hablemos</a></p>
 </section>
 
 <!-- FAQ -->
-<section class="sec faq-sec">
-  <div class="sec-inner">
-    <div style="text-align:center;margin-bottom:8px">
-      <div class="r"><div class="eyebrow">Preguntas frecuentes</div></div>
-      <h2 class="sec-h r d1" style="max-width:600px;margin:0 auto">Lo que nos preguntan<br>todos los dueños.</h2>
+<section class="faq" id="faq">
+  <div class="faq-list r">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Necesito instalar algo o cambiar de hardware?
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><p>No. Funciona con los celulares de tus clientes y cualquier navegador para el dashboard. Solo imprimís los QR de cada mesa.</p></div>
     </div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Cómo se integra con mi sistema de caja actual?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>Etia funciona de manera independiente y complementaria a tu sistema de caja. Los pagos se procesan directamente desde el celular del comensal. Si necesitás integración con tu POS existente, lo coordinamos durante el onboarding sin costo adicional.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Necesito instalar algo o cambiar de hardware?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>No. Etia no requiere ningún hardware adicional. Funciona con los celulares que ya tienen tus clientes y con cualquier dispositivo con navegador para acceder al dashboard. Solo necesitás imprimir los QR de cada mesa.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Qué pasa con los datos de mis clientes?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>Los datos de tus clientes son exclusivamente tuyos. Etia los almacena con encriptación de nivel bancario y nunca los comparte con terceros ni con otros restaurantes. Cumplimos con la Ley 25.326 de Protección de Datos Personales de Argentina.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Cuánto tarda la implementación?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>En promedio, una tarde. Cargás el menú, configurás tus mesas y el sistema está listo. Nuestro equipo te acompaña durante el proceso de onboarding y podemos asistirte de manera remota o presencial en Buenos Aires.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Qué pasa si quiero dar de baja?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>Sin penalidades ni permanencia mínima. Podés cancelar cuando quieras. Te devolvemos el acceso a todos tus datos históricos en formato exportable para que no pierdas nada.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          ¿Funciona con cualquier tipo de restaurante?
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="faq-a"><p>Sí. Etia funciona para restaurantes, bares, parrillas, cafeterías, patios de comidas y cualquier establecimiento gastronómico con servicio de mesa. El sistema es completamente configurable al flujo de trabajo de tu negocio.</p></div>
-      </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Cómo se integra con mi sistema de caja actual?
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><p>Etia funciona de manera independiente y complementaria. Si necesitás integración con tu POS, la coordinamos durante el onboarding sin costo.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Cuánto tarda la implementación?
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><p>Una tarde: cargás el menú, configurás las mesas y listo. Te acompañamos por videollamada o en persona en Buenos Aires.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Qué pasa con los datos de mis clientes?
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><p>Son tuyos. Encriptados, nunca compartidos con terceros ni con otros restaurantes. Cumplimos la Ley 25.326 de Protección de Datos Personales.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">¿Y si quiero dar de baja?
+        <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M4.5 6.75L9 11.25L13.5 6.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="faq-a"><p>Cancelás cuando quieras, sin penalidades. Te llevás todos tus datos históricos en formato exportable.</p></div>
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="cta-sec" id="cta">
-  <h2 class="r">Tu restaurante,<br><em>con inteligencia real.</em></h2>
-  <p class="r d1">Los primeros 30 días son gratis. Sin tarjeta. Sin hardware.</p>
-  <div class="cta-btns r d2">
-    <a href="mailto:contacto@etia.com.ar" class="btn-blue" style="font-size:15px;padding:15px 30px">
-      Comenzar ahora
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-    <button class="btn-outline" onclick="openDemo()">Probar demo primero</button>
-  </div>
-</section>
+<svg class="curve" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true" style="background:var(--white)"><path d="M0,64 C420,4 1020,4 1440,64 L1440,64 L0,64 Z" fill="var(--deep)"/></svg>
 
-<!-- FOOTER -->
 <footer>
-  <div class="foot-inner">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <img src="logo-cream.png" alt="Etia" style="height:28px;opacity:.7"/>
-        <div class="foot-tagline">Tu restaurante, en tiempo real.</div>
-      </div>
-      <div class="foot-cols">
-        <div class="foot-col">
-          <h4>Producto</h4>
-          <a href="#host">Etia Host</a>
-          <a href="#red">Red social</a>
-          <a href="#comensal">Comensal</a>
-          <a href="#precios">Precios</a>
-        </div>
-        <div class="foot-col">
-          <h4>Empresa</h4>
-          <a href="mailto:contacto@etia.com.ar">Contacto</a>
-          <a href="mailto:soporte@etia.com.ar">Soporte</a>
-          <a href="mailto:ventas@etia.com.ar">Ventas</a>
-        </div>
-        <div class="foot-col">
-          <h4>Legal</h4>
-          <a href="#" onclick="openLegal('terms');return false">Términos y condiciones</a>
-          <a href="#" onclick="openLegal('privacy');return false">Política de privacidad</a>
-          <a href="#" onclick="openLegal('cookies');return false">Política de cookies</a>
-        </div>
-      </div>
+  <div class="foot-hero">
+    <span class="k r">30 días gratis · sin tarjeta · sin hardware</span>
+    <button class="foot-cta r d1" onclick="openDemoForm()" aria-label="Pedir una demo">
+      <span class="big">¿<u>Empezamos</u><em>?</em>
+        <span class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="var(--cream)" stroke-width="2.4"><path d="M4 12h15m-6-7 7 7-7 7"/></svg></span>
+      </span>
+    </button>
+    <div class="foot-btns r d2">
+      <button class="btn btn-blue" onclick="openDemoForm()">Pedir una demo guiada</button>
+      <a class="btn btn-ghost-w" href="demo-host.html">Probar la demo
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5h8M7 3.5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <div class="foot-bottom">
-      <div class="foot-copy">© 2026 Etia SRL. Buenos Aires, Argentina. CUIT 30-71234567-8</div>
-      <div class="foot-legal">
-        <a onclick="openLegal('terms');return false">Términos</a>
-        <a onclick="openLegal('privacy');return false">Privacidad</a>
-        <a href="mailto:contacto@etia.com.ar">contacto@etia.com.ar</a>
-      </div>
+  </div>
+  <div class="foot">
+    <img src="logo-cream.png" alt="Etia"/>
+    <div class="foot-links">
+      <a href="comensal.html">Comensales</a>
+      <a href="mailto:contacto@etia.com.ar">Contacto</a>
+      <a href="mailto:ventas@etia.com.ar">Ventas</a>
+      <a onclick="openLegal('terms')">Términos</a>
+      <a onclick="openLegal('privacy')">Privacidad</a>
     </div>
+    <div class="foot-copy">© 2026 ETIA · BUENOS AIRES</div>
   </div>
 </footer>
 
-<!-- VPN MODAL -->
-<div class="modal-overlay" id="vpnModal">
+<!-- MODAL DEMO GUIADA -->
+<div class="overlay" id="demoModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeVPN()">✕</button>
-    <h2>¿Cuánto vale tu cliente promedio?</h2>
-    <p class="sub">Estimá el valor presente neto (VPN) de un cliente frecuente en tu salón.</p>
-    <div class="form-grid">
-      <div class="form-group"><label>Ticket promedio (ARS)</label><input type="number" id="v-ticket" value="25000" oninput="calcVPN()"/></div>
-      <div class="form-group"><label>Visitas / mes</label><input type="number" id="v-visits" value="2" oninput="calcVPN()"/></div>
-      <div class="form-group"><label>Horizonte (años)</label><input type="number" id="v-years" value="3" oninput="calcVPN()"/></div>
-      <div class="form-group"><label>Tasa de descuento (%)</label><input type="number" id="v-rate" value="15" oninput="calcVPN()"/></div>
-    </div>
-    <div class="vpn-result">
-      <div class="vpn-result-label">VPN Estimado</div>
-      <div class="vpn-result-num" id="v-result">$ 1.369.935</div>
-      <div class="vpn-result-sub" id="v-gross">Ingreso bruto en 3 años: $ 1.800.000</div>
-    </div>
-    <div class="vpn-chart">
-      <div class="vpn-chart-label">Flujo por año · Nominal vs Descontado</div>
-      <div class="bars" id="v-bars"></div>
-      <div class="bar-labels" id="v-labels"></div>
-    </div>
-  </div>
-</div>
-
-<!-- DEMO MODAL -->
-<div class="demo-overlay" id="demoModal">
-  <div class="demo-modal">
-    <button class="modal-close" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:20px;color:var(--navy);cursor:pointer;opacity:.5;padding:4px 8px" onclick="closeDemo()">✕</button>
-    <h2>Probar Etia en acción</h2>
-    <p class="sub">Completá tus datos y te armamos una demo personalizada para tu restaurante.</p>
-    <form class="demo-form" onsubmit="submitDemo(event)">
-      <input type="text" placeholder="Tu nombre" required/>
-      <input type="text" placeholder="Nombre del restaurante" required/>
-      <input type="email" placeholder="Tu email" required/>
-      <input type="tel" placeholder="WhatsApp (opcional)"/>
-      <button type="submit" class="demo-submit">Solicitar demo gratuita</button>
+    <button class="modal-close" onclick="closeDemoForm()">✕</button>
+    <h2>Demo guiada para tu restaurante</h2>
+    <p class="sub">Dejanos tus datos y coordinamos una demo con tu carta y tus mesas.</p>
+    <form class="dform" onsubmit="submitDemo(event)">
+      <input type="text" id="f-nombre" placeholder="Tu nombre" required/>
+      <input type="text" id="f-resto" placeholder="Nombre del restaurante" required/>
+      <input type="email" id="f-email" placeholder="Tu email" required/>
+      <input type="tel" id="f-tel" placeholder="Teléfono / WhatsApp (opcional)"/>
+      <button type="submit" id="f-btn">Solicitar demo gratuita</button>
     </form>
-    <div class="demo-note">Te contactamos en menos de 24 hs. Sin compromiso.</div>
+    <div class="dnote">Te contactamos en menos de 24 hs. Sin compromiso.</div>
   </div>
 </div>
 
-<!-- LEGAL MODAL -->
-<div class="legal-overlay" id="legalModal">
-  <div class="legal-modal">
-    <div class="legal-header">
-      <h2 id="legal-title">Términos y condiciones</h2>
-      <button class="modal-close" style="position:static;background:none;border:none;font-size:20px;color:var(--navy);cursor:pointer;opacity:.5;padding:4px 8px" onclick="closeLegal()">✕</button>
-    </div>
-    <div class="legal-body" id="legal-content"></div>
+<!-- MODAL LEGAL -->
+<div class="overlay" id="legalModal">
+  <div class="modal legal-modal">
+    <button class="modal-close" onclick="closeLegal()">✕</button>
+    <h2 id="legal-title"></h2>
+    <div id="legal-content"></div>
   </div>
 </div>
 
 <script>
-  // Nav scroll
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('s', scrollY > 40), {passive:true});
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>40),{passive:true});
 
-  // Reveal
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);} });
-  }, {threshold:.08, rootMargin:'0px 0px -24px 0px'});
-  document.querySelectorAll('.r,.rl,.rr,.rs').forEach(el => obs.observe(el));
+function toggleMenu(){
+  const m=document.getElementById('mnav');
+  const open=m.classList.toggle('open');
+  if(open)nav.classList.add('s');
+  else if(scrollY<=40)nav.classList.remove('s');
+}
 
-  // FAQ
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.r:not(.on),.rl:not(.on),.rr:not(.on)').forEach(el=>obs.observe(el));
 
-  // VPN Modal
-  function openVPN() { document.getElementById('vpnModal').classList.add('open'); calcVPN(); }
-  function closeVPN() { document.getElementById('vpnModal').classList.remove('open'); }
-  document.getElementById('vpnModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeVPN(); });
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function calcVPN() {
-    const ticket = parseFloat(document.getElementById('v-ticket').value)||0;
-    const visits  = parseFloat(document.getElementById('v-visits').value)||0;
-    const years   = Math.max(1,Math.min(10,parseFloat(document.getElementById('v-years').value)||3));
-    const rate    = (parseFloat(document.getElementById('v-rate').value)||15)/100;
-    const monthly = ticket * visits;
-    const annual  = monthly * 12;
-    let vpn = 0, gross = 0;
-    const annuals = [];
-    const discs   = [];
-    for (let y=1; y<=years; y++) {
-      gross += annual;
-      const d = annual / Math.pow(1+rate, y);
-      vpn += d;
-      annuals.push(annual);
-      discs.push(d);
-    }
-    const fmt = n => '$ ' + Math.round(n).toLocaleString('es-AR');
-    document.getElementById('v-result').textContent = fmt(vpn);
-    document.getElementById('v-gross').textContent = `Ingreso bruto en ${years} año${years>1?'s':''}: ${fmt(gross)}`;
-    // Draw bars
-    const maxV = Math.max(...annuals);
-    const barsEl = document.getElementById('v-bars');
-    const labelsEl = document.getElementById('v-labels');
-    barsEl.innerHTML = '';
-    labelsEl.innerHTML = '';
-    annuals.forEach((a, i) => {
-      const bg = document.createElement('div');
-      bg.className = 'bar-group';
-      const b1 = document.createElement('div');
-      b1.className = 'bar nominal';
-      b1.style.height = (a/maxV*100)+'%';
-      const b2 = document.createElement('div');
-      b2.className = 'bar disc';
-      b2.style.height = (discs[i]/maxV*100)+'%';
-      bg.appendChild(b1); bg.appendChild(b2);
-      barsEl.appendChild(bg);
-      const lbl = document.createElement('div');
-      lbl.className = 'bar-label';
-      lbl.textContent = `Año ${i+1}`;
-      labelsEl.appendChild(lbl);
-    });
-  }
-
-  // Demo Modal
-  function openDemo() { document.getElementById('demoModal').classList.add('open'); }
-  function closeDemo() { document.getElementById('demoModal').classList.remove('open'); }
-  document.getElementById('demoModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeDemo(); });
-  function submitDemo(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.demo-submit');
-    btn.textContent = '¡Listo! Te contactamos pronto.';
-    btn.style.background = '#16a34a';
-    btn.disabled = true;
-    setTimeout(closeDemo, 2000);
-  }
-
-  // Legal Modal
-  const legalContent = {
-    terms: {
-      title: 'Términos y condiciones',
-      body: `
-        <p>Última actualización: junio 2026</p>
-        <h3>1. Aceptación de los términos</h3>
-        <p>Al acceder y utilizar los servicios de Etia SRL ("Etia", "nosotros", "la plataforma"), usted acepta quedar vinculado por estos Términos y Condiciones. Si no está de acuerdo con alguno de los términos, no podrá utilizar el servicio.</p>
-        <h3>2. Descripción del servicio</h3>
-        <p>Etia es una plataforma SaaS (Software as a Service) que provee a establecimientos gastronómicos herramientas de gestión digital, incluyendo: menú digital, sistema de pedidos, procesamiento de pagos, analítica de negocio, inteligencia artificial y red social gastronómica.</p>
-        <h3>3. Registro y cuenta</h3>
-        <p>Para utilizar Etia Host, el restaurante debe registrarse y proporcionar información veraz y actualizada. El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso.</p>
-        <h3>4. Plan y facturación</h3>
-        <p>El Plan Pro tiene un costo de ARS $36.000 + IVA por mes, con facturación mensual. El primer mes es gratuito sin necesidad de tarjeta de crédito. La cancelación puede realizarse en cualquier momento sin penalidades.</p>
-        <h3>5. Datos y privacidad</h3>
-        <p>Etia trata los datos personales de acuerdo a su Política de Privacidad y en cumplimiento de la Ley 25.326 de Protección de Datos Personales de la República Argentina.</p>
-        <h3>6. Propiedad intelectual</h3>
-        <p>Todos los derechos de propiedad intelectual sobre la plataforma Etia pertenecen a Etia SRL. El uso del servicio no otorga ningún derecho de propiedad sobre el software o sus componentes.</p>
-        <h3>7. Limitación de responsabilidad</h3>
-        <p>Etia no será responsable por daños indirectos, incidentales o consecuentes derivados del uso o imposibilidad de uso del servicio. La responsabilidad máxima de Etia no excederá el monto pagado por el servicio en los últimos 3 meses.</p>
-        <h3>8. Modificaciones</h3>
-        <p>Etia se reserva el derecho de modificar estos términos en cualquier momento, notificando a los usuarios con al menos 30 días de anticipación.</p>
-        <h3>9. Jurisdicción</h3>
-        <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa será resuelta en los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires.</p>
-      `
-    },
-    privacy: {
-      title: 'Política de privacidad',
-      body: `
-        <p>Última actualización: junio 2026</p>
-        <h3>1. Responsable del tratamiento</h3>
-        <p>Etia SRL, con domicilio en la Ciudad Autónoma de Buenos Aires, Argentina, es el responsable del tratamiento de sus datos personales.</p>
-        <h3>2. Datos que recopilamos</h3>
-        <p>Recopilamos los siguientes tipos de datos:</p>
-        <ul>
-          <li>Datos de registro: nombre, email, teléfono y datos del restaurante.</li>
-          <li>Datos de uso: historial de pedidos, visitas, platos consumidos y calificaciones.</li>
-          <li>Datos de pago: procesados por proveedores certificados PCI DSS. Etia no almacena datos de tarjetas.</li>
-          <li>Datos técnicos: dirección IP, tipo de dispositivo, sistema operativo.</li>
-        </ul>
-        <h3>3. Finalidad del tratamiento</h3>
-        <p>Los datos se utilizan para: proveer el servicio, generar análisis de negocio para el restaurante, personalizar la experiencia del comensal, y mejorar la plataforma.</p>
-        <h3>4. Compartición de datos</h3>
-        <p>Etia no vende ni comparte datos personales con terceros con fines comerciales. Los datos del comensal son accesibles únicamente por el restaurante donde realizó la visita y por Etia con fines operativos.</p>
-        <h3>5. Seguridad</h3>
-        <p>Utilizamos cifrado TLS en tránsito y AES-256 en reposo. Realizamos auditorías de seguridad periódicas y cumplimos con estándares internacionales de seguridad de la información.</p>
-        <h3>6. Derechos del titular</h3>
-        <p>Conforme a la Ley 25.326, usted tiene derecho a acceder, rectificar, suprimir y oponerse al tratamiento de sus datos. Para ejercer estos derechos, contacte a privacidad@etia.com.ar.</p>
-        <h3>7. Retención de datos</h3>
-        <p>Los datos se conservan mientras la cuenta esté activa y por un período adicional de 5 años para cumplimiento de obligaciones legales.</p>
-        <h3>8. Contacto</h3>
-        <p>Para consultas sobre privacidad: privacidad@etia.com.ar</p>
-      `
-    },
-    cookies: {
-      title: 'Política de cookies',
-      body: `
-        <h3>¿Qué son las cookies?</h3>
-        <p>Las cookies son pequeños archivos de texto que se almacenan en su dispositivo al visitar nuestra plataforma.</p>
-        <h3>Tipos de cookies que utilizamos</h3>
-        <ul>
-          <li><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico de la plataforma (sesión, autenticación).</li>
-          <li><strong>Cookies analíticas:</strong> Nos permiten entender cómo se utiliza la plataforma para mejorarla. Utilizamos datos anonimizados.</li>
-          <li><strong>Cookies de preferencias:</strong> Recuerdan sus configuraciones y preferencias de uso.</li>
-        </ul>
-        <h3>Control de cookies</h3>
-        <p>Puede configurar su navegador para rechazar cookies. Tenga en cuenta que deshabilitar cookies esenciales puede afectar el funcionamiento de la plataforma.</p>
-        <h3>Contacto</h3>
-        <p>Para consultas: privacidad@etia.com.ar</p>
-      `
-    }
+/* typewriter del hero */
+const PHRASES=[
+  'El comensal escanea, pide y paga desde su celular. Vos lo ves todo en vivo.',
+  'Mirá el margen real de cada plato mientras el servicio está corriendo.',
+  'Etia te avisa cuando un cliente frecuente dejó de venir — antes de perderlo.',
+  'Dividir la cuenta, dejar propina y calificar al mozo: un solo gesto.',
+  'Sabé qué plato destacar el fin de semana, y cuánto te va a dejar.'
+];
+const typerEl=document.getElementById('typer');
+if(typerEl && !REDUCED){
+  let pi=0;
+  const type=(txt,i=0)=>{
+    if(i<=txt.length){typerEl.textContent=txt.slice(0,i);setTimeout(()=>type(txt,i+1),26+Math.random()*24)}
+    else setTimeout(erase,2600);
   };
+  const erase=()=>{
+    const t=typerEl.textContent;
+    if(t.length){typerEl.textContent=t.slice(0,-1);setTimeout(erase,11)}
+    else{pi=(pi+1)%PHRASES.length;setTimeout(()=>type(PHRASES[pi]),350)}
+  };
+  setTimeout(erase,3400);
+}
 
-  function openLegal(type) {
-    const data = legalContent[type];
-    document.getElementById('legal-title').textContent = data.title;
-    document.getElementById('legal-content').innerHTML = data.body;
-    document.getElementById('legalModal').classList.add('open');
-  }
-  function closeLegal() { document.getElementById('legalModal').classList.remove('open'); }
-  document.getElementById('legalModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeLegal(); });
+/* reloj en vivo del hero */
+const tickLive=()=>{const el=document.getElementById('live-time');if(el)el.textContent=new Date().toTimeString().slice(0,5)};
+tickLive();setInterval(tickLive,15000);
 
-  // Close modals on Escape
-  document.addEventListener('keydown', e => {
-    if(e.key==='Escape') { closeVPN(); closeDemo(); closeLegal(); }
+/* toasts de actividad sobre el dashboard */
+const ACTS=[
+  'Mesa 7 · pagó $24.300 — propina 10%',
+  'Reserva confirmada · sábado 21:00 · 4 personas',
+  'Etia Intelligence · nuevo insight de menú',
+  'Carolina M. volvió · +185 pts otorgados',
+  'Mesa 12 · pedido enviado a cocina'
+];
+if(!REDUCED){
+  let ai=0;
+  const toast=document.getElementById('actToast'),msg=document.getElementById('actMsg');
+  setTimeout(function cycle(){
+    msg.textContent=ACTS[ai%ACTS.length];ai++;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),3200);
+    setTimeout(cycle,4600);
+  },1600);
+}
+
+/* dashboard 3D: entra "acostado" y se endereza con el scroll; el mouse suma tilt */
+const shot=document.querySelector('.hero-shot');
+const DESK=matchMedia('(min-width:960px)').matches;
+if(shot && !REDUCED && DESK){
+  const br=shot.querySelector('.browser');
+  br.style.transformOrigin='center 72%';
+  let baseRX=12, tx=0, ty=0;
+  const apply=()=>{br.style.transform=heroLive?'':`rotateX(${(baseRX+tx).toFixed(2)}deg) rotateY(${ty.toFixed(2)}deg)`};
+  const straighten=()=>{
+    const r=shot.getBoundingClientRect(), vh=innerHeight;
+    const p=Math.min(1,Math.max(0,(vh-r.top)/(vh*.82)));
+    baseRX=12*(1-p);
+    apply();
+  };
+  addEventListener('scroll',straighten,{passive:true});
+  straighten();
+  shot.addEventListener('mousemove',e=>{
+    if(heroLive)return;
+    const b=shot.getBoundingClientRect();
+    ty=((e.clientX-b.left)/b.width-.5)*4;
+    tx=-((e.clientY-b.top)/b.height-.5)*3;
+    apply();
   });
+  shot.addEventListener('mouseleave',()=>{tx=0;ty=0;apply()});
+}
+
+/* marquee: duplicar contenido para loop infinito */
+const mq=document.getElementById('mqTrack');
+if(mq)mq.innerHTML+=mq.innerHTML;
+
+/* showcase sticky: sincronizar imagen + url con el paso visible */
+const steps=[...document.querySelectorAll('.show-step')];
+const showImgs=[...document.querySelectorAll('.show-imgs img')];
+const showUrl=document.getElementById('show-url');
+if(steps.length && DESK){
+  const sobs=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const i=steps.indexOf(e.target);
+      showImgs.forEach((im,j)=>im.classList.toggle('cur',j===i));
+      steps.forEach((s,j)=>s.classList.toggle('dim',j!==i));
+      showUrl.textContent=e.target.dataset.url;
+    });
+  },{threshold:.55});
+  steps.forEach(s=>sobs.observe(s));
+}
+
+/* botones magnéticos */
+if(!REDUCED && DESK){
+  document.querySelectorAll('.btn,.nav-cta,.price-cta').forEach(b=>{
+    b.addEventListener('mousemove',e=>{
+      const r=b.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      b.style.transform=`translate(${x*5}px,${y*4}px)`;
+    });
+    b.addEventListener('mouseleave',()=>b.style.transform='');
+  });
+}
+
+function toggleFaq(btn){
+  const it=btn.parentElement,was=it.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!was)it.classList.add('open');
+}
+
+/* calculadora VPN con count-up */
+let vpnShown=0;
+function tween(el,from,to,dur=650){
+  if(REDUCED){el.textContent='$ '+Math.round(to).toLocaleString('es-AR');return}
+  let st=null;
+  const step=ts=>{
+    if(!st)st=ts;
+    const p=Math.min(1,(ts-st)/dur), e=1-Math.pow(1-p,3);
+    el.textContent='$ '+Math.round(from+(to-from)*e).toLocaleString('es-AR');
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+function calcVPN(){
+  const t=+document.getElementById('v-ticket').value||0,
+        v=+document.getElementById('v-visits').value||0,
+        y=Math.max(1,Math.min(10,+document.getElementById('v-years').value||3)),
+        r=(+document.getElementById('v-rate').value||15)/100;
+  const annual=t*v*12;let vpn=0,gross=0;
+  for(let i=1;i<=y;i++){gross+=annual;vpn+=annual/Math.pow(1+r,i)}
+  tween(document.getElementById('v-result'),vpnShown,vpn);
+  vpnShown=vpn;
+  document.getElementById('v-gross').textContent=`INGRESO BRUTO EN ${y} AÑO${y>1?'S':''}: $ ${Math.round(gross).toLocaleString('es-AR')}`;
+}
+/* arranca en 0 y cuenta cuando entra en pantalla */
+const calcEl=document.querySelector('.calc');
+if(calcEl){
+  document.getElementById('v-result').textContent='$ 0';
+  const cobs=new IntersectionObserver(es=>{
+    if(es[0].isIntersecting){calcVPN();cobs.disconnect()}
+  },{threshold:.35});
+  cobs.observe(calcEl);
+}
+
+/* demo guiada — arma el mail con los datos cargados */
+function openDemoForm(){document.getElementById('demoModal').classList.add('open')}
+function closeDemoForm(){document.getElementById('demoModal').classList.remove('open')}
+document.getElementById('demoModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDemoForm()});
+function submitDemo(e){
+  e.preventDefault();
+  const n=document.getElementById('f-nombre').value,
+        r=document.getElementById('f-resto').value,
+        m=document.getElementById('f-email').value,
+        t=document.getElementById('f-tel').value;
+  const body=encodeURIComponent(`Hola, quiero una demo de Etia.\n\nNombre: ${n}\nRestaurante: ${r}\nEmail: ${m}\nTeléfono: ${t||'-'}\n`);
+  location.href=`mailto:contacto@etia.com.ar?subject=${encodeURIComponent('Demo Etia — '+r)}&body=${body}`;
+  const b=document.getElementById('f-btn');
+  b.textContent='¡Listo! Se abre tu mail para enviar.';b.style.background='#16a34a';
+  setTimeout(()=>{closeDemoForm();b.textContent='Solicitar demo gratuita';b.style.background=''},2600);
+}
+
+/* demo embebida del hero: la captura se convierte en el dashboard real */
+var heroLive=false;
+function activateHeroDemo(){
+  if(heroLive)return;heroLive=true;
+  const box=document.getElementById('heroDemo');
+  const f=document.createElement('iframe');
+  f.className='demo-frame';f.src='demo-host.html';f.title='Demo en vivo de Etia Host';
+  box.innerHTML='';box.appendChild(f);
+  const t=document.getElementById('actToast');if(t)t.style.display='none';
+  const br=document.querySelector('.hero-shot .browser');if(br)br.style.transform='';
+}
+
+/* demo del comensal: carga recién cuando la sección se acerca */
+const dd=document.getElementById('dinerDemo');
+if(dd){
+  const dio=new IntersectionObserver(es=>{
+    if(es[0].isIntersecting){dd.src='demo.html';dio.disconnect()}
+  },{rootMargin:'600px'});
+  dio.observe(dd);
+}
+
+/* una noche con etia: la línea se dibuja y los pasos se encienden */
+const nl=document.getElementById('nightLine');
+if(nl){
+  const nsteps=[...nl.querySelectorAll('.night-step')];
+  const nio=new IntersectionObserver(es=>{
+    if(!es[0].isIntersecting)return;
+    document.getElementById('nightFill').style.width='88%';
+    nsteps.forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),REDUCED?0:320+i*380));
+    nio.disconnect();
+  },{threshold:.3});
+  nio.observe(nl);
+}
+
+/* calculadora de ahorro anual */
+function calcSave(){
+  const rev=+document.getElementById('s-rev').value;
+  const f=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  document.getElementById('s-rev-val').textContent=f(rev);
+  const them=rev*.05*12, etia=432000;
+  document.getElementById('s-them').textContent=f(them);
+  document.getElementById('s-win').textContent=f(Math.max(0,them-etia));
+}
+if(document.getElementById('s-rev'))calcSave();
+
+/* voces del research */
+let vi=0,vT=null;
+function showVoice(i){
+  vi=i;
+  document.querySelectorAll('#voiceBox .voice').forEach((v,j)=>v.classList.toggle('cur',j===i));
+  document.querySelectorAll('#voiceDots button').forEach((b,j)=>b.classList.toggle('cur',j===i));
+}
+function setVoice(i){showVoice(i);clearInterval(vT);startVoices();}
+function startVoices(){if(!REDUCED)vT=setInterval(()=>showVoice((vi+1)%3),5200)}
+if(document.getElementById('voiceBox'))startVoices();
+
+/* profundidad en cards clave */
+if(!REDUCED && DESK){
+  document.querySelectorAll('.save-cell.win,.price-card').forEach(c=>{
+    c.classList.add('depth');
+    c.addEventListener('mousemove',e=>{
+      const b=c.getBoundingClientRect();
+      const x=(e.clientX-b.left)/b.width-.5, y=(e.clientY-b.top)/b.height-.5;
+      c.style.transform=`perspective(900px) rotateX(${(-y*4).toFixed(2)}deg) rotateY(${(x*5).toFixed(2)}deg) translateY(-2px)`;
+    });
+    c.addEventListener('mouseleave',()=>c.style.transform='');
+  });
+}
+
+/* barra de progreso + scrollspy */
+const pg=document.getElementById('pgbar');
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  pg.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+const SPY=['producto','precios','faq'];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{
+  const link=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+  if(link)link.classList.toggle('act',e.isIntersecting);
+}),{rootMargin:'-32% 0px -55% 0px'});
+SPY.forEach(id=>{const el=document.getElementById(id);if(el)spy.observe(el)});
+
+/* entrada de página */
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.remove('pre')));
+
+/* spotlight que sigue el mouse en secciones navy */
+if(!REDUCED && DESK){
+  document.querySelectorAll('.hero,.vpn').forEach(sec=>{
+    const sp=document.createElement('div');sp.className='spot';sec.appendChild(sp);
+    sec.addEventListener('mousemove',e=>{
+      const b=sec.getBoundingClientRect();
+      sp.style.setProperty('--mx',(e.clientX-b.left)+'px');
+      sp.style.setProperty('--my',(e.clientY-b.top)+'px');
+    },{passive:true});
+  });
+}
+
+/* legales */
+const legal={
+ terms:{title:'Términos y condiciones',body:`
+  <p>Última actualización: junio 2026</p>
+  <h3>1. Aceptación</h3><p>Al utilizar los servicios de Etia usted acepta estos Términos y Condiciones.</p>
+  <h3>2. Servicio</h3><p>Etia es una plataforma SaaS que provee a establecimientos gastronómicos menú digital, pedidos, pagos, analítica, inteligencia artificial y red social gastronómica.</p>
+  <h3>3. Cuenta</h3><p>El restaurante debe registrarse con información veraz y es responsable de la confidencialidad de sus credenciales.</p>
+  <h3>4. Facturación</h3><p>El plan tiene un costo de ARS $36.000 + IVA por mes. El primer mes es gratuito sin tarjeta. La cancelación puede realizarse en cualquier momento, sin penalidades.</p>
+  <h3>5. Datos</h3><p>Etia trata los datos personales conforme a su Política de Privacidad y la Ley 25.326.</p>
+  <h3>6. Propiedad intelectual</h3><p>Todos los derechos sobre la plataforma pertenecen a Etia. El uso del servicio no otorga derechos sobre el software.</p>
+  <h3>7. Responsabilidad</h3><p>Etia no será responsable por daños indirectos derivados del uso del servicio. La responsabilidad máxima no excederá lo pagado en los últimos 3 meses.</p>
+  <h3>8. Jurisdicción</h3><p>Rigen las leyes de la República Argentina; jurisdicción de los tribunales de la Ciudad Autónoma de Buenos Aires.</p>`},
+ privacy:{title:'Política de privacidad',body:`
+  <p>Última actualización: junio 2026</p>
+  <h3>1. Responsable</h3><p>Etia, Ciudad Autónoma de Buenos Aires, Argentina.</p>
+  <h3>2. Datos recopilados</h3><ul><li>Registro: nombre, email, teléfono y datos del restaurante.</li><li>Uso: pedidos, visitas, platos y calificaciones.</li><li>Pagos: procesados por proveedores certificados PCI DSS — Etia no almacena tarjetas.</li><li>Técnicos: IP, dispositivo, sistema operativo.</li></ul>
+  <h3>3. Finalidad</h3><p>Proveer el servicio, generar análisis para el restaurante, personalizar la experiencia y mejorar la plataforma.</p>
+  <h3>4. Compartición</h3><p>Etia no vende ni comparte datos personales con fines comerciales. Los datos del comensal son accesibles solo por el restaurante donde realizó la visita.</p>
+  <h3>5. Seguridad</h3><p>Cifrado TLS en tránsito y AES-256 en reposo, con auditorías periódicas.</p>
+  <h3>6. Derechos</h3><p>Conforme a la Ley 25.326 podés acceder, rectificar y suprimir tus datos escribiendo a privacidad@etia.com.ar.</p>`}
+};
+function openLegal(k){
+  document.getElementById('legal-title').textContent=legal[k].title;
+  document.getElementById('legal-content').innerHTML=legal[k].body;
+  document.getElementById('legalModal').classList.add('open');
+}
+function closeLegal(){document.getElementById('legalModal').classList.remove('open')}
+document.getElementById('legalModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLegal()});
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeDemoForm();closeLegal()}});
+</script>
+
+<style>
+#gosplash{position:fixed;inset:0;background:#0B2038;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;pointer-events:none;transition:opacity .3s ease}
+#gosplash.on{opacity:1;pointer-events:auto}
+#gosplash img{height:32px;width:auto;animation:goPulse 1.6s ease-in-out infinite}
+@keyframes goPulse{0%,100%{opacity:.6}50%{opacity:1}}
+#gosplash .gb{width:150px;height:2px;background:rgba(237,232,216,.12);border-radius:99px;overflow:hidden}
+#gosplash .gb i{display:block;height:100%;width:40%;background:#4A9EFF;border-radius:99px;animation:goSlide 1.1s ease-in-out infinite}
+@keyframes goSlide{0%{transform:translateX(-150%)}100%{transform:translateX(400%)}}
+#gosplash .gt{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:rgba(237,232,216,.4)}
+</style>
+<div id="gosplash" aria-hidden="true">
+  <img src="etia-wordmark-cream.png" alt=""/>
+  <div class="gb"><i></i></div>
+  <div class="gt">ABRIENDO LA DEMO</div>
+</div>
+<script>
+document.querySelectorAll('a[href$="demo-host.html"],a[href$="demo.html"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    document.getElementById('gosplash').classList.add('on');
+    setTimeout(function(){location.href=a.getAttribute('href')},380);
+  });
+});
 </script>
 </body>
 </html>
